@@ -12,8 +12,8 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1D4ED8',
-                        secondary: '#FBBF24',
+                        primary: '#000000',
+                        secondary: '#ffffff',
                         background: '#F9FAFB',
                         text_dark: '#1E293B',
                         success: '#22C55E',
@@ -27,15 +27,15 @@
         }
     </script>
     <style>
-        .dark-bg { background-color: #1E293B; }
-        .login-card { background-color: #334155; }
+        .dark-bg { background-color: #bababa; }
+        .login-card { background-color: #323539; }
     </style>
 </head>
 <body class="font-sans dark-bg text-white">
 
     <section id="login-section" class="flex items-center justify-center h-screen">
         <div class="login-card p-8 rounded-xl shadow-2xl w-full max-w-md">
-            <h2 class="text-3xl font-bold text-secondary text-center mb-8">Вход в Админ-панель</h2>
+            <h2 class="text-3xl font-bold text-secondary text-center mb-8">Админ-панель</h2>
             
             <form id="login-form">
                 <div class="mb-5">
@@ -47,7 +47,7 @@
                     <input type="password" id="admin-password" required class="w-full bg-gray-700 border border-gray-600 p-3 rounded-lg text-white placeholder-gray-400 focus:ring-primary focus:border-primary transition duration-300" placeholder="••••••••">
                 </div>
                 
-                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition duration-300">
+                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold text-lg hover:bg-white-700 transition duration-300">
                     Войти
                 </button>
                 
