@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 Jastar Apartments | Админ-панель</title>
+    <title>Админ-панель | Jastar Apartments</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script>
+        // ... (конфигурация Tailwind CSS остается прежней) ...
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1D4ED8', // Насыщенный синий
-                        secondary: '#FBBF24', // Мягкий жёлтый
-                        background: '#F9FAFB', // Светлый серо-белый
-                        text_dark: '#1E293B', // Тёмно-серый
+                        primary: '#1D4ED8',
+                        secondary: '#FBBF24',
+                        background: '#F9FAFB',
+                        text_dark: '#1E293B',
                         success: '#22C55E',
                         error: '#EF4444',
-                        // Кастомный цвет фона для админки
-                        admin_bg: '#1E293B', 
-                        admin_card: '#2D3748', // Чуть светлее для карточек
                     },
                     fontFamily: {
                         sans: ['Poppins', 'sans-serif'],
@@ -29,76 +27,66 @@
             }
         }
     </script>
+    <style>
+        .dark-bg { background-color: #1E293B; }
+        .login-card { background-color: #334155; }
+    </style>
 </head>
-<body class="font-sans bg-admin_bg text-white">
+<body class="font-sans dark-bg text-white">
 
-    <div id="login-section" class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-admin_card p-8 rounded-xl shadow-2xl w-full max-w-md">
-            <h2 class="text-3xl font-bold text-center mb-6 text-secondary">Вход в Админ-панель</h2>
+    <section id="login-section" class="flex items-center justify-center h-screen">
+        <div class="login-card p-8 rounded-xl shadow-2xl w-full max-w-md">
+            <h2 class="text-3xl font-bold text-secondary text-center mb-8">Вход в Админ-панель</h2>
+            
             <form id="login-form">
-                <div class="mb-4">
-                    <label for="admin-email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
-                    <input type="email" id="admin-email" value="admin@jastar.kz" required class="w-full bg-gray-700 border border-gray-600 text-white p-3 rounded-lg focus:ring-primary focus:border-primary transition duration-300" placeholder="admin@jastar.kz">
+                <div class="mb-5">
+                    <label for="admin-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                    <input type="email" id="admin-email" required class="w-full bg-gray-700 border border-gray-600 p-3 rounded-lg text-white placeholder-gray-400 focus:ring-primary focus:border-primary transition duration-300" placeholder="admin@jastar.kz">
                 </div>
                 <div class="mb-6">
-                    <label for="admin-password" class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
-                    <input type="password" id="admin-password" value="admin123" required class="w-full bg-gray-700 border border-gray-600 text-white p-3 rounded-lg focus:ring-primary focus:border-primary transition duration-300" placeholder="••••••••">
+                    <label for="admin-password" class="block text-sm font-medium text-gray-300 mb-2">Пароль</label>
+                    <input type="password" id="admin-password" required class="w-full bg-gray-700 border border-gray-600 p-3 rounded-lg text-white placeholder-gray-400 focus:ring-primary focus:border-primary transition duration-300" placeholder="••••••••">
                 </div>
                 
-                <button type="submit" class="w-full bg-primary text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-700 transition duration-300">
+                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition duration-300">
                     Войти
                 </button>
                 
-                <p id="login-message" class="mt-4 text-center font-semibold text-error hidden"></p>
-                <p class="mt-4 text-xs text-gray-400 text-center">Демо-данные: admin@jastar.kz / admin123</p>
+                <p id="login-message" class="mt-4 text-center font-semibold hidden"></p>
             </form>
         </div>
-    </div>
+    </section>
 
-    <div id="dashboard-section" class="min-h-screen hidden">
-        
-        <header class="bg-admin_card shadow-lg">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-                <h1 class="text-2xl font-bold text-secondary">Админ-панель Jastar Apartments</h1>
-                <div class="flex items-center space-x-4">
-                    <span id="welcome-user" class="text-gray-300 text-sm hidden sm:block">Добро пожаловать, Администратор!</span>
-                    <button id="logout-button" class="bg-error text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition duration-300">
-                        Выйти
-                    </button>
-                    <a href="index.html" class="text-gray-300 hover:text-secondary transition duration-300 text-sm">На главную</a>
-                </div>
-            </div>
+    <section id="dashboard-section" class="hidden p-4 md:p-8">
+        <header class="flex justify-between items-center pb-6 border-b border-gray-700 mb-6">
+            <h1 class="text-3xl font-bold text-secondary">Управление заявками</h1>
+            <button id="logout-button" class="bg-error text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition duration-300">Выйти</button>
         </header>
+        
+        <p id="no-applications-message" class="text-center text-gray-400 py-10 hidden">
+            Нет активных заявок. Отлично!
+        </p>
 
-        <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-            <h2 class="text-3xl font-bold mb-6 text-white">📝 Все заявки на проживание</h2>
-            
-            <div class="bg-admin_card rounded-xl shadow-xl overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-700">
-                    <thead class="bg-gray-700">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Дата</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Имя</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Телефон</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Комната</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Статус</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Комментарий</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody id="applications-table-body" class="divide-y divide-gray-800">
-                        <tr class="text-center">
-                            <td colspan="7" class="py-10 text-gray-500">Загрузка заявок...</td>
-                        </tr>
+        <div class="overflow-x-auto bg-gray-800 rounded-xl shadow-xl">
+            <table class="min-w-full divide-y divide-gray-700">
+                <thead class="bg-gray-700">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Дата</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Имя</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Телефон</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Тип</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Статус</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider max-w-xs">Комментарий</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="applications-table-body" class="bg-gray-800 divide-y divide-gray-700">
                     </tbody>
-                </table>
-                <p id="no-applications-message" class="hidden py-8 text-center text-gray-400">Нет новых заявок.</p>
-            </div>
-        </main>
-    </div>
+            </table>
+        </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/admin.js"></script>
-
 </body>
 </html>
