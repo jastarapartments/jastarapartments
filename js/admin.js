@@ -3,9 +3,10 @@
 // --- 1. НАСТРОЙКА SUPABASE (Используем те же ключи) ---
 const SUPABASE_URL = "https://vfignoxzqjjmghzsyyqr.supabase.co"; // <-- Вставьте свой URL
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmaWdub3h6cWpqbWdoenN5eXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU4MTIsImV4cCI6MjA3NzQyMTgxMn0.1sRa8C4vnwYs3ll9CwExBJ6aoLwG924CUpKRWs7B_ww"; // <-- Вставьте свой публичный ANON KEY
+// Файл: js/admin.js
 
-// Инициализация клиента Supabase
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Инициализация клиента Supabase (ИСПРАВЛЕНО: используем window.supabase)
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ===================================================================
 
 
@@ -30,33 +31,24 @@ const STATUS_OPTIONS = ["Новая", "В обработке", "Одобрена
 // --- 2. ЛОГИКА АВТОРИЗАЦИИ (ТОЛЬКО ЧЕРЕЗ SUPABASE) ---
 
 /**
- * Проверяет активную сессию Supabase и решает, что показать: дашборд или форму входа.
+ * Проверяет активную сессию Supabase.
  */
 async function checkAuth() {
-    // Используем Supabase, чтобы проверить, авторизован ли пользователь (админ)
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session) {
-        // Если сессия есть, показываем дашборд и загружаем данные
         showDashboard();
         loadApplications();
     } else {
-        // Если сессии нет, показываем форму входа
         showLogin();
     }
 }
 
-/**
- * Отображает дашборд.
- */
 function showDashboard() {
     loginSection.classList.add('hidden');
     dashboardSection.classList.remove('hidden');
 }
 
-/**
- * Отображает форму входа.
- */
 function showLogin() {
     dashboardSection.classList.add('hidden');
     loginSection.classList.remove('hidden');
@@ -83,26 +75,20 @@ loginForm.addEventListener('submit', async (e) => {
 
     if (error) {
         console.error('Ошибка входа Supabase:', error);
-        loginMessage.textContent = '❌ Неверный email или пароль. Убедитесь, что пользователь зарегистрирован в Supabase Auth.';
+        loginMessage.textContent = '❌ Неверный email или пароль.';
         loginMessage.classList.remove('hidden');
     } else {
-        // Успешный вход
         checkAuth(); 
     }
 });
 
 logoutButton.addEventListener('click', async () => {
-    // Выход из Supabase
     await supabase.auth.signOut();
     checkAuth();
 });
 
 // --- 3. РАБОТА С ЗАЯВКАМИ (SUPABASE) ---
-// (Этот код остался без изменений, так как он уже работает с реальной базой данных)
 
-/**
- * Форматирует дату.
- */
 function formatTimestamp(isoDate) {
     const date = new Date(isoDate);
     return date.toLocaleDateString('ru-RU', { 
@@ -114,12 +100,13 @@ function formatTimestamp(isoDate) {
 }
 
 /**
- * Загружает все заявки из Supabase и отображает их.
+ * Загружает все заявки. Работает только для авторизованных пользователей (благодаря RLS).
  */
 async function loadApplications() {
     tableBody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-gray-500">Загрузка заявок...</td></tr>`;
     
     try {
+        // Запрос SELECT. Если RLS настроен неверно, здесь будет ошибка.
         const { data: applications, error } = await supabase
             .from('applications')
             .select('*')
@@ -170,14 +157,13 @@ async function loadApplications() {
 }
 
 /**
- * Обновляет статус заявки в Supabase.
+ * Обновляет статус заявки. Работает только для авторизованных (RLS UPDATE).
  */
 async function updateApplicationStatus(selectElement) {
     const id = selectElement.getAttribute('data-id');
     const newStatus = selectElement.value;
     const statusSpan = document.getElementById(`status-${id}`);
 
-    // Блокировка и визуальный фидбек
     selectElement.disabled = true;
     const originalStatusClass = statusSpan.className;
     statusSpan.textContent = 'Обновление...';
@@ -191,16 +177,14 @@ async function updateApplicationStatus(selectElement) {
 
         if (error) throw error;
 
-        // Успех
         statusSpan.textContent = newStatus;
         statusSpan.className = `px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${STATUS_COLORS[newStatus]}`;
         
     } catch (error) {
-        // Ошибка
         console.error('Ошибка обновления статуса:', error);
         alert('Ошибка при обновлении статуса. См. консоль.');
         statusSpan.className = originalStatusClass; 
-        selectElement.value = selectElement.options[selectElement.selectedIndex].value; // Сохраняем старый статус
+        selectElement.value = selectElement.options[selectElement.selectedIndex].value;
     }
     
     selectElement.disabled = false;
@@ -209,5 +193,5 @@ async function updateApplicationStatus(selectElement) {
 // Запуск проверки авторизации при загрузке страницы
 document.addEventListener('DOMContentLoaded', checkAuth);
 
-// Глобальная функция для доступа из HTML
+// Глобальная функция
 window.updateApplicationStatus = updateApplicationStatus;
