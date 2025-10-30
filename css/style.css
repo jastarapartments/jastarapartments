@@ -1,50 +1,29 @@
+/*
+ * Файл: css/style.css
+ * Кастомные стили для Jastar Apartments
+ */
+
+/* Применение шрифта Poppins ко всему телу документа */
 body {
-  font-family: 'Poppins', sans-serif;
-  box-sizing: border-box;
-}
-.nav-link {
-  color: #374151;
-  transition: color 0.2s;
-}
-.nav-link:hover {
-  color: #1D4ED8;
-}
-.hero-gradient {
-  background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);
-}
-.btn-primary {
-  background: #1D4ED8;
-  transition: 0.3s;
-}
-.btn-primary:hover {
-  background: #1E40AF;
-  transform: translateY(-2px);
-}
-.btn-secondary {
-  background: #FBBF24;
-  transition: 0.3s;
-}
-.btn-secondary:hover {
-  background: #F59E0B;
-  transform: translateY(-2px);
-}
-.room-card {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-  overflow: hidden;
-  transition: all 0.3s;
-}
-.room-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-}
-.room-header {
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 1.1rem;
+    font-family: 'Poppins', sans-serif;
+    /* Установка плавного скролла для лучшего UX */
+    scroll-behavior: smooth;
 }
 
+/* Эффект при наведении на карточки, согласно ТЗ (мягкие тени) */
+.card-hover:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); /* Более выраженная тень */
+}
+
+/* Утилита для скрытия/показа модального окна с анимацией */
+.modal-fade-in {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Стили для скроллбара в админке (необязательно, но приятно) */
+/* (Будут добавлены в admin.css, если вы решите их разделить) */
