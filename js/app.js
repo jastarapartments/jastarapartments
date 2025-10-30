@@ -1,63 +1,135 @@
-import { supabase } from "./supabase.js";
+// Файл: js/app.js
 
-// Модалки
-window.openModal = (roomType = "") => {
-  document.getElementById("applicationModal")?.classList.add("show");
-  if (roomType) document.getElementById("roomType").value = roomType;
-};
+// --- 1. НАСТРОЙКА SUPABASE (ОБЯЗАТЕЛЬНО ЗАМЕНИТЕ ЭТИ КЛЮЧИ!) ---
+const SUPABASE_URL = "https://your-project-id.supabase.co"; // <-- Вставьте свой URL
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // <-- Вставьте свой публичный ANON KEY
 
-window.closeModal = () => {
-  document.getElementById("applicationModal")?.classList.remove("show");
-};
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// ------------------------------------------------------------------
 
-// Заявка
-window.submitApplication = async (e) => {
-  e.preventDefault();
-  const data = {
-    name: e.target.name.value,
-    phone: e.target.phone.value,
-    room_type: e.target.roomType.value,
-    comment: e.target.comment.value,
-    created_at: new Date(),
-    status: "Новая"
-  };
-  const { error } = await supabase.from("applications").insert(data);
-  if (error) alert("Ошибка: " + error.message);
-  else {
-    alert("✅ Заявка отправлена!");
-    e.target.reset();
-    closeModal();
-  }
-};
+const modal = document.getElementById('application-modal');
+const form = document.getElementById('application-form');
+const roomSelect = document.getElementById('room_type');
+const formMessage = document.getElementById('form-message');
+const submitButton = document.getElementById('submit-button');
+const mobileMenu = document.getElementById('mobile-menu');
 
-// Админка
-window.adminLogin = async (e) => {
-  e.preventDefault();
-  const email = e.target.adminEmail.value;
-  const password = e.target.adminPassword.value;
-  if (email === "admin@jastar.kz" && password === "admin123") {
-    loadApplications();
-    document.getElementById("adminPanel").classList.add("show");
-    document.getElementById("mainContent").classList.add("hide");
-  } else alert("Неверный логин или пароль");
-};
 
-async function loadApplications() {
-  const { data, error } = await supabase.from("applications").select("*").order("created_at", { ascending: false });
-  const tbody = document.getElementById("applicationsTable");
-  if (error || !data?.length) {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-400">Нет заявок</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = data.map(a => `
-    <tr class="border-b border-gray-600">
-      <td class="py-3 px-4">${a.name}</td>
-      <td class="py-3 px-4">${a.phone}</td>
-      <td class="py-3 px-4">${a.room_type}</td>
-      <td class="py-3 px-4">${a.comment}</td>
-      <td class="py-3 px-4">${new Date(a.created_at).toLocaleDateString()}</td>
-      <td class="py-3 px-4 text-green-400">${a.status}</td>
-    </tr>
-  `).join("");
+// --- 2. ФУНКЦИИ ИНТЕРФЕЙСА ---
+
+/**
+ * Открывает модальное окно и предзаполняет тип комнаты.
+ * @param {string} roomType - Тип комнаты (2-местная, 3-местная, Общая).
+ */
+function openModal(roomType) {
+    // Сбрасываем форму и сообщение
+    form.reset();
+    formMessage.classList.add('hidden');
+    formMessage.textContent = '';
+    submitButton.disabled = false;
+    submitButton.textContent = 'Отправить заявку';
+    submitButton.classList.remove('bg-success', 'bg-error', 'opacity-50');
+    submitButton.classList.add('bg-primary', 'hover:bg-blue-700');
+    
+    // Предзаполнение поля выбора комнаты
+    if (roomType) {
+        roomSelect.value = roomType;
+    }
+
+    modal.classList.remove('hidden');
+    // Небольшая задержка для анимации
+    setTimeout(() => {
+        modal.classList.add('opacity-100');
+    }, 10);
+    document.body.style.overflow = 'hidden'; // Запрет прокрутки фона
 }
 
+/**
+ * Закрывает модальное окно.
+ */
+function closeModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('opacity-100');
+    document.body.style.overflow = ''; // Возобновление прокрутки фона
+}
+
+/**
+ * Переключает видимость мобильного меню (бургер).
+ */
+function toggleMobileMenu() {
+    mobileMenu.classList.toggle('hidden');
+}
+
+/**
+ * Плавный скролл к секции комнат.
+ */
+function scrollToRooms() {
+    document.getElementById('rooms').scrollIntoView({ behavior: 'smooth' });
+}
+
+
+// --- 3. ЛОГИКА ОТПРАВКИ ЗАЯВКИ (SUPABASE) ---
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const room_type = document.getElementById('room_type').value;
+    const comment = document.getElementById('comment').value;
+
+    submitButton.disabled = true;
+    submitButton.textContent = 'Отправка...';
+    submitButton.classList.add('opacity-50');
+
+    try {
+        const { error } = await supabase
+            .from('applications') // Название таблицы из ТЗ
+            .insert([
+                { 
+                    name, 
+                    phone, 
+                    room_type, 
+                    comment, 
+                    status: 'Новая' // Статус по умолчанию
+                },
+            ]);
+
+        if (error) throw error;
+
+        // Успех
+        form.reset();
+        formMessage.textContent = '✅ Спасибо! Мы свяжемся с вами в ближайшее время.';
+        formMessage.className = 'mt-4 text-center font-semibold text-success';
+        submitButton.textContent = 'Успешно отправлено!';
+        submitButton.classList.remove('bg-primary', 'hover:bg-blue-700', 'opacity-50');
+        submitButton.classList.add('bg-success');
+        
+        // Автоматически закрыть модалку через 3 секунды
+        setTimeout(closeModal, 3000);
+
+    } catch (error) {
+        // Ошибка
+        console.error('Ошибка при отправке заявки:', error);
+        formMessage.textContent = '❌ Ошибка отправки: Попробуйте позже.';
+        formMessage.className = 'mt-4 text-center font-semibold text-error';
+        submitButton.textContent = 'Повторить попытку';
+        submitButton.disabled = false;
+        submitButton.classList.remove('opacity-50');
+    }
+    
+    formMessage.classList.remove('hidden');
+});
+
+// Добавляем глобальные функции для доступа из HTML
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.toggleMobileMenu = toggleMobileMenu;
+window.scrollToRooms = scrollToRooms;
+
+// Закрытие модалки по клику вне формы
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        closeModal();
+    }
+});
