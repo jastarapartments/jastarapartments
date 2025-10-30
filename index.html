@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jastar Apartments — Современное студенческое общежитие в Алматы</title>
+    <title>Комнаты Jastar Apartments — 2-местные и 3-местные</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css"> 
     
     <script>
         tailwind.config = {
@@ -34,15 +33,15 @@
 
     <header class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-            <a href="#hero-section" class="text-2xl font-extrabold text-primary">Jastar <span class="text-text_dark">Apartments</span></a>
+            <a href="index.html" class="text-2xl font-extrabold text-primary">Jastar <span class="text-text_dark">Apartments</span></a>
 
             <nav class="hidden md:flex space-x-6 text-text_dark font-medium">
-                <a href="#hero-section" class="hover:text-primary transition duration-300">Главная</a>
-                <a href="rooms.html" class="hover:text-primary transition duration-300">Комнаты</a> 
-                <a href="#gallery" class="hover:text-primary transition duration-300">Галерея</a> 
-                <a href="#amenities" class="hover:text-primary transition duration-300">Удобства</a>
-                <a href="#reviews" class="hover:text-primary transition duration-300">Отзывы</a>
-                <a href="#contacts" class="hover:text-primary transition duration-300">Контакты</a>
+                <a href="index.html" class="hover:text-primary transition duration-300">Главная</a>
+                <a href="rooms.html" class="text-primary transition duration-300 font-semibold">Комнаты</a> 
+                <a href="index.html#gallery" class="hover:text-primary transition duration-300">Галерея</a> 
+                <a href="index.html#amenities" class="hover:text-primary transition duration-300">Удобства</a>
+                <a href="index.html#reviews" class="hover:text-primary transition duration-300">Отзывы</a>
+                <a href="index.html#contacts" class="hover:text-primary transition duration-300">Контакты</a>
                 <button onclick="openModal('Общая')" class="text-primary hover:text-blue-700 transition duration-300 font-semibold">Оставить заявку</button>
             </nav>
 
@@ -62,164 +61,135 @@
         </div>
         
         <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-2 transition duration-300">
-            <a href="#hero-section" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Главная</a>
-            <a href="rooms.html" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Комнаты</a>
-            <a href="#gallery" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Галерея</a>
-            <a href="#amenities" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Удобства</a>
-            <a href="#reviews" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Отзывы</a>
-            <a href="#contacts" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Контакты</a>
+            <a href="index.html" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Главная</a>
+            <a href="rooms.html" class="mobile-link block px-4 py-2 text-primary hover:bg-gray-50 font-semibold">Комнаты</a>
+            <a href="index.html#gallery" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Галерея</a>
+            <a href="index.html#amenities" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Удобства</a>
+            <a href="index.html#reviews" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Отзывы</a>
+            <a href="index.html#contacts" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Контакты</a>
             <button onclick="openModal('Общая')" class="w-full text-left px-4 py-2 text-primary hover:bg-gray-50 font-semibold">Оставить заявку</button>
             <a href="admin.html" class="block px-4 py-2 text-text_dark hover:bg-gray-50 font-semibold border-t mt-2 pt-2">🔐 Вход для админов</a>
         </div>
     </header>
-    
-    <section id="hero-section" class="bg-gradient-to-r from-hero_dark to-hero_light text-white pt-16 pb-24 lg:pt-32 lg:pb-40">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
-            <div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
-                    Jastar Apartments — <br>
-                    <span class="text-secondary">Идеальное общежитие</span> для студентов
-                </h1>
-                
-                <p class="text-xl lg:text-2xl mb-10 opacity-90 font-light">
-                    Новый корпус в центре Алматы. Комфорт и безопасность от **80 000 ₸** в месяц.
+
+    <section class="bg-primary text-white pt-16 pb-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4">
+                ✨ Комфорт и функциональность в каждой комнате
+            </h1>
+            <p class="text-xl lg:text-2xl opacity-90 font-light max-w-3xl mx-auto">
+                Все наши комнаты оформлены в едином современном стиле. Вы выбираете только количество соседей.
+            </p>
+        </div>
+    </section>
+
+    <section id="room-gallery" class="py-16 lg:py-24 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-extrabold text-center mb-10 text-text_dark">🖼️ Посмотрите, как выглядят комнаты</h2>
+            
+            <div class="relative overflow-hidden">
+                <div class="flex space-x-4 overflow-x-scroll snap-x snap-mandatory pb-4">
+                    <div class="flex-shrink-0 w-4/5 sm:w-1/2 lg:w-1/3 snap-center rounded-xl shadow-lg border-4 border-gray-100 overflow-hidden">
+                        
+                        <img src="images/room_common_1.jpg" alt="Интерьер комнаты Jastar Apartments" class="w-full h-72 object-cover transition duration-300 hover:scale-105">
+                    </div>
+                    <div class="flex-shrink-0 w-4/5 sm:w-1/2 lg:w-1/3 snap-center rounded-xl shadow-lg border-4 border-gray-100 overflow-hidden">
+                        
+                        <img src="images/room_bathroom.jpg" alt="Санузел в комнате" class="w-full h-72 object-cover transition duration-300 hover:scale-105">
+                    </div>
+                    <div class="flex-shrink-0 w-4/5 sm:w-1/2 lg:w-1/3 snap-center rounded-xl shadow-lg border-4 border-gray-100 overflow-hidden">
+                        
+                        <img src="images/room_desk_area.jpg" alt="Рабочее место студента" class="w-full h-72 object-cover transition duration-300 hover:scale-105">
+                    </div>
+                    <div class="flex-shrink-0 w-4/5 sm:w-1/2 lg:w-1/3 snap-center rounded-xl shadow-lg border-4 border-gray-100 overflow-hidden">
+                        
+                        <img src="images/room_closet.jpg" alt="Шкаф для одежды" class="w-full h-72 object-cover transition duration-300 hover:scale-105">
+                    </div>
+                    </div>
+                <p class="text-center mt-4 text-sm text-gray-500">
+                    * Прокрутите, чтобы увидеть больше! (Фото 2-местной и 3-местной комнат одинаковые по комплектации).
                 </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="room-selection" class="py-16 lg:py-24 bg-background">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-text_dark">💳 Выберите свой тариф</h2>
+
+            <div class="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="rooms.html" class="text-center bg-white text-primary px-10 py-4 rounded-xl font-bold text-lg shadow-2xl hover:bg-gray-100 transition duration-300 transform hover:scale-105">
-                        Посмотреть комнаты
-                    </a>
-                    <button onclick="openModal('Общая')" class="bg-transparent border-2 border-white text-white px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-primary hover:border-primary transition duration-300 transform hover:scale-105">
-                        Оставить заявку
+                <div class="bg-white p-8 rounded-2xl shadow-2xl border-t-8 border-secondary card-hover transition duration-500">
+                    <h3 class="text-3xl font-extrabold text-secondary mb-2">2-местная комната</h3>
+                    <p class="text-gray-500 mb-6">Максимум личного пространства, минимум соседей.</p>
+                    
+                    <div class="flex items-end mb-8">
+                        <p class="text-6xl font-bold text-primary">100 000 ₸</p>
+                        <span class="text-xl font-medium text-gray-500 ml-2">/ месяц за место</span>
+                    </div>
+
+                    <div class="space-y-4 mb-10">
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-success">👤</span> Всего **1 сосед**
+                        </p>
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-primary">📐</span> Самая большая площадь на человека
+                        </p>
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-success">🛁</span> Включен личный санузел и душ
+                        </p>
+                    </div>
+
+                    <button onclick="openModal('2-местная')" class="w-full bg-secondary text-text_dark px-12 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-amber-400 transition duration-300 transform hover:scale-105">
+                        Оставить заявку на 2-местную
+                    </button>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-2xl border-t-8 border-primary card-hover transition duration-500">
+                    <h3 class="text-3xl font-extrabold text-primary mb-2">3-местная комната</h3>
+                    <p class="text-gray-500 mb-6">Самый популярный и экономичный вариант.</p>
+                    
+                    <div class="flex items-end mb-8">
+                        <p class="text-6xl font-bold text-primary">80 000 ₸</p>
+                        <span class="text-xl font-medium text-gray-500 ml-2">/ месяц за место</span>
+                    </div>
+
+                    <div class="space-y-4 mb-10">
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-success">👥</span> Всего **2 соседа**
+                        </p>
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-primary">💵</span> Лучшая цена на рынке
+                        </p>
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-success">🛁</span> Включен личный санузел и душ
+                        </p>
+                    </div>
+
+                    <button onclick="openModal('3-местная')" class="w-full bg-primary text-white px-12 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                        Оставить заявку на 3-местную
                     </button>
                 </div>
             </div>
             
-            <div class="hidden md:flex justify-center items-center">
-                <img src="images/logo.jpg" alt="Jastar Apartments Logo" class="w-72 h-72 object-contain rounded-xl shadow-2xl border-4 border-white/20">
+            <div class="mt-16 text-center max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg border-l-4 border-success">
+                <h4 class="text-2xl font-bold text-text_dark mb-4">Что есть в каждой комнате (2-х и 3-х местной):</h4>
+                <ul class="grid sm:grid-cols-2 gap-3 text-lg text-gray-700 text-left">
+                    <li class="flex items-center">
+                        <span class="text-success mr-2">✔️</span> Собственный санузел
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-success mr-2">✔️</span> Индивидуальный шкаф
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-success mr-2">✔️</span> Рабочий стол и стул
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-success mr-2">✔️</span> Кондиционер (сплит-система)
+                    </li>
+                </ul>
             </div>
-        </div>
-    </section>
 
-    <section id="gallery" class="py-16 lg:py-24 bg-white">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-extrabold text-center mb-16 text-text_dark">📸 Фотогалерея: Атмосфера и Комфорт</h2>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                
-                <div class="overflow-hidden rounded-xl shadow-lg aspect-square hover:shadow-xl transition duration-300 hover:opacity-90">
-                    <img src="images/photo_fasad.jpg" alt="Фасад здания Jastar Apartments" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
-                    <p class="text-center p-2 text-sm font-medium text-gray-700">Фасад здания</p>
-                </div>
-                
-                <div class="overflow-hidden rounded-xl shadow-lg aspect-square hover:shadow-xl transition duration-300 hover:opacity-90">
-                    <img src="images/photo_reseption.jpg" alt="Ресепшн и холл" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
-                    <p class="text-center p-2 text-sm font-medium text-gray-700">Ресепшн и холл</p>
-                </div>
-                
-                <div class="overflow-hidden rounded-xl shadow-lg aspect-square hover:shadow-xl transition duration-300 hover:opacity-90">
-                    <img src="images/photo_kitchen.jpg" alt="Общая кухня" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
-                    <p class="text-center p-2 text-sm font-medium text-gray-700">Современная кухня</p>
-                </div>
-                
-                <div class="overflow-hidden rounded-xl shadow-lg aspect-square hover:shadow-xl transition duration-300 hover:opacity-90">
-                    <img src="images/photo_coworking.jpg" alt="Зона для коворкинга" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
-                    <p class="text-center p-2 сtext-sm font-medium text-gray-700">Коворкинг/лаунж-зона</p>
-                </div>
-                
-            </div>
-            
-            <div class="text-center mt-12">
-                <a href="rooms.html" class="inline-block bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition duration-300">
-                    Смотреть варианты комнат &rarr;
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section id="amenities" class="py-16 lg:py-24 bg-background">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-extrabold text-center mb-16 text-text_dark">✨ Все, что нужно студенту: Удобства и Сервисы</h2>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <div class="bg-white p-6 rounded-xl shadow-xl border-t-4 border-primary hover:shadow-2xl transition duration-300">
-                    <div class="text-4xl text-primary mb-3">🛡️</div>
-                    <h3 class="text-xl font-bold text-text_dark mb-2">Безопасность 24/7</h3>
-                    <p class="text-gray-600">Круглосуточная охрана, видеонаблюдение, строгий контроль доступа и электронные ключи.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-xl border-t-4 border-secondary hover:shadow-2xl transition duration-300">
-                    <div class="text-4xl text-secondary mb-3">📍</div>
-                    <h3 class="text-xl font-bold text-text_dark mb-2">Отличное Расположение</h3>
-                    <p class="text-gray-600">Центр Алматы, ул. Сатпаева, 7А. Рядом с ВУЗами и всей необходимой инфраструктурой.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-xl border-t-4 border-primary hover:shadow-2xl transition duration-300">
-                    <div class="text-4xl text-primary mb-3">📶</div>
-                    <h3 class="text-xl font-bold text-text_dark mb-2">Учеба без преград</h3>
-                    <p class="text-gray-600">Бесплатный высокоскоростной Wi-Fi и специализированные тихие зоны для продуктивных занятий.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-xl border-t-4 border-secondary hover:shadow-2xl transition duration-300">
-                    <div class="text-4xl text-secondary mb-3">🧺</div>
-                    <h3 class="text-xl font-bold text-text_dark mb-2">Бытовой Комфорт</h3>
-                    <p class="text-gray-600">Оборудованные кухни, прачечная, кондиционеры и регулярная уборка общих зон.</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="reviews" class="py-16 lg:py-24 bg-primary text-white">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-extrabold text-center mb-12">💬 Что говорят наши жильцы</h2>
-            
-            <div class="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-2xl relative">
-                <p class="text-4xl text-secondary mb-4">⭐⭐⭐⭐⭐</p>
-                <blockquote class="text-xl italic text-gray-800 leading-relaxed mb-6">
-                    «Очень классное общежитие, удобное месторасположение и комнаты со всеми удобствами. **Идеально для студента!**»
-                </blockquote>
-                <p class="text-lg font-semibold text-text_dark">— Довольный жилец (Отзыв с 2ГИС)</p>
-                <div class="mt-4 text-right">
-                    <a href="https://2gis.kz/almaty/firm/9429940001099839" target="_blank" class="text-primary hover:text-blue-700 font-bold transition duration-300">
-                        Посмотреть все 150+ отзывов на 2ГИС &rarr;
-                    </a>
-                </div>
-            </div>
-            
-        </div>
-    </section>
-
-    <section id="contacts" class="py-16 lg:py-24 bg-background">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-extrabold text-center mb-12 text-text_dark">📍 Наши контакты и локация</h2>
-            <div class="grid md:grid-cols-3 gap-8 text-center mb-12">
-                
-                <div class="p-6 rounded-xl shadow-lg bg-white">
-                    <h4 class="text-xl font-semibold mb-2 text-primary">Адрес</h4>
-                    <p class="text-2xl font-bold text-text_dark">ул. Каныша Сатпаева, 7А</p>
-                    <p class="text-sm text-gray-500 mt-1">Бостандыкский район, Алматы</p>
-                </div>
-
-                <div class="p-6 rounded-xl shadow-lg bg-white">
-                    <h4 class="text-xl font-semibold mb-2 text-primary">Телефон</h4>
-                    <a href="tel:+77074986836" class="text-2xl font-bold text-text_dark hover:text-primary transition duration-300">+7 (707) 498 68 36</a>
-                    <p class="text-sm text-gray-500 mt-1">Работаем круглосуточно</p>
-                </div>
-
-                <div class="p-6 rounded-xl shadow-lg bg-white">
-                    <h4 class="text-xl font-semibold mb-2 text-primary">Instagram</h4>
-                    <a href="https://instagram.com/jastar_apartments" target="_blank" class="text-2xl font-bold text-text_dark hover:text-primary transition duration-300">@jastar_apartments</a>
-                    <p class="text-sm text-gray-500 mt-1">Больше фото и видео в stories!</p>
-                </div>
-
-            </div>
-            
-            <div class="mt-8 h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-2xl border-4 border-gray-100">
-                <iframe src="https://2gis.kz/almaty/firm/9429940001099839?m=76.90151%2C43.238466%2F16.03&amp;disable-scroll-zoom=true&amp;popup=9429940001099839" width="100%" height="100%" frameborder="0" allowfullscreen style="border:0;" loading="lazy"></iframe>
-            </div>
-            
         </div>
     </section>
 
@@ -277,6 +247,45 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/app.js"></script>
+    
+    <script>
+        // Функции для модального окна и мобильного меню
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function openModal(roomType) {
+            const modal = document.getElementById('application-modal');
+            const roomSelect = document.getElementById('room_type');
+            
+            // Устанавливаем выбранный тип комнаты
+            if (roomType) {
+                for (let i = 0; i < roomSelect.options.length; i++) {
+                    if (roomSelect.options[i].value === roomType) {
+                        roomSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('application-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Закрытие модального окна по клику вне его
+        document.getElementById('application-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 </html>
