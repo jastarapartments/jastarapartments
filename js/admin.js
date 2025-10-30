@@ -1,12 +1,14 @@
 // Файл: js/admin.js
 
-// --- 1. НАСТРОЙКА SUPABASE (Используем те же ключи) ---
-const SUPABASE_URL = "https://vfignoxzqjjmghzsyyqr.supabase.co"; // <-- Вставьте свой URL
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmaWdub3h6cWpqbWdoenN5eXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU4MTIsImV4cCI6MjA3NzQyMTgxMn0.1sRa8C4vnwYs3ll9CwExBJ6aoLwG924CUpKRWs7B_ww"; // <-- Вставьте свой публичный ANON KEY
-// Файл: js/admin.js
+// ===================================================================
+// --- 1. НАСТРОЙКА SUPABASE (ВАШИ РЕАЛЬНЫЕ ДАННЫЕ) ---
+// ===================================================================
+const SUPABASE_URL = "https://vfignoxzqjjmghzsyyqr.supabase.co"; 
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmaWdub3h6cWpqbWdoenN5eXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU4MTIsImV4cCI6MjA3NzQyMTgxMn0.1sRa8C4vnwYs3ll9CwExBJ6aoLwG924CUpKRWs7B_ww"; 
 
-// Инициализация клиента Supabase (ИСПРАВЛЕНО: используем window.supabase)
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Инициализация клиента Supabase (с исправлением ошибки ReferenceError)
+const { createClient } = window.supabase; 
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 // ===================================================================
 
 
@@ -75,7 +77,7 @@ loginForm.addEventListener('submit', async (e) => {
 
     if (error) {
         console.error('Ошибка входа Supabase:', error);
-        loginMessage.textContent = '❌ Неверный email или пароль.';
+        loginMessage.textContent = '❌ Неверный email или пароль. Проверьте учетные данные и настройки Site URL.';
         loginMessage.classList.remove('hidden');
     } else {
         checkAuth(); 
@@ -100,13 +102,12 @@ function formatTimestamp(isoDate) {
 }
 
 /**
- * Загружает все заявки. Работает только для авторизованных пользователей (благодаря RLS).
+ * Загружает все заявки.
  */
 async function loadApplications() {
     tableBody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-gray-500">Загрузка заявок...</td></tr>`;
     
     try {
-        // Запрос SELECT. Если RLS настроен неверно, здесь будет ошибка.
         const { data: applications, error } = await supabase
             .from('applications')
             .select('*')
@@ -157,7 +158,7 @@ async function loadApplications() {
 }
 
 /**
- * Обновляет статус заявки. Работает только для авторизованных (RLS UPDATE).
+ * Обновляет статус заявки.
  */
 async function updateApplicationStatus(selectElement) {
     const id = selectElement.getAttribute('data-id');
