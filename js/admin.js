@@ -25,12 +25,12 @@ const logoutButton = document.getElementById('logout-button');
 const loginMessage = document.getElementById('login-message');
 const tableBody = document.getElementById('applications-table-body');
 
-// Настройки статусов
+// Настройки статусов (Цвета адаптированы под темный фон)
 const STATUS_COLORS = {
-    'Новая': 'bg-secondary/30 text-text_dark', // Используем secondary (желтый) для "Новая"
-    'В обработке': 'bg-primary/30 text-primary',
-    'Одобрена': 'bg-success/30 text-success',
-    'Отклонена': 'bg-error/30 text-error',
+    'Новая': 'bg-secondary/20 text-secondary', // Желтый текст на полупрозрачном фоне
+    'В обработке': 'bg-primary/20 text-primary',
+    'Одобрена': 'bg-success/20 text-success',
+    'Отклонена': 'bg-error/20 text-error',
 };
 const STATUS_OPTIONS = ["Новая", "В обработке", "Одобрена", "Отклонена"];
 
@@ -51,7 +51,7 @@ async function checkAuth() {
 function showAdminPanel(email) {
     loginScreen.classList.add('hidden');
     adminPanel.classList.remove('hidden');
-    document.getElementById('admin-info').textContent = email; // Обновление email в хедере
+    document.getElementById('admin-info').textContent = email;
 }
 
 function showLoginScreen() {
@@ -61,7 +61,6 @@ function showLoginScreen() {
 
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    // Используем 'email' и 'password' из нового admin.html
     const email = document.getElementById('email').value; 
     const password = document.getElementById('password').value;
 
@@ -82,14 +81,11 @@ loginForm.addEventListener('submit', async (e) => {
         console.error('Ошибка входа Supabase:', error);
         loginMessage.textContent = '❌ Неверный email или пароль.';
         loginMessage.classList.remove('hidden');
-    } else {
-        // checkAuth вызовется через onAuthStateChange
     }
 });
 
 logoutButton.addEventListener('click', async () => {
     await supabase.auth.signOut();
-    // checkAuth вызовется через onAuthStateChange
 });
 
 // Слушатель для автоматического обновления при входе/выходе
@@ -130,7 +126,7 @@ function formatPhoneNumberForWhatsApp(phone) {
 // --- 4. РАБОТА С ЗАЯВКАМИ И СТАТИСТИКОЙ ---
 
 async function loadApplications() {
-    tableBody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-500">Загрузка заявок...</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-500">Загрузка заявок...</td></tr>`;
     
     try {
         const { data: applications, error } = await supabase
@@ -148,14 +144,16 @@ async function loadApplications() {
 
     } catch (error) {
         console.error('Ошибка загрузки заявок:', error);
-        tableBody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-error">Не удалось загрузить данные: ${error.message}. Проверьте RLS.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-error">Не удалось загрузить данные: ${error.message}. Проверьте RLS.</td></tr>`;
     }
 }
 
 function updateStatistics(applications) {
     const total = applications.length;
+    // Считаем "Новые"
     const newApps = applications.filter(a => a.status === 'Новая').length;
-    const processedApps = applications.filter(a => a.status !== 'Новая').length; // Все, кроме "Новая"
+    // Считаем "Обработанные" (все, кроме "Новая")
+    const processedApps = applications.filter(a => a.status !== 'Новая').length; 
 
     document.getElementById('total-applications').textContent = total;
     document.getElementById('new-applications').textContent = newApps;
@@ -166,14 +164,14 @@ function renderTable(applications) {
     tableBody.innerHTML = '';
 
     if (applications.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-500">Нет активных заявок.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-500">Нет активных заявок.</td></tr>`;
         return;
     }
 
     applications.forEach(app => {
         const row = document.createElement('tr');
-        // Обновлен класс для лучшей совместимости с новым темным admin.html
-        row.className = 'hover:bg-gray-100 transition duration-150'; 
+        // Используем hover:bg-gray-700 для темной темы
+        row.className = 'hover:bg-gray-700 transition duration-150'; 
         
         const statusSelectOptions = STATUS_OPTIONS.map(status => 
             `<option value="${status}" ${app.status === status ? 'selected' : ''}>${status}</option>`
@@ -183,9 +181,9 @@ function renderTable(applications) {
         const waLink = `https://wa.me/${waNumber}`;
 
         row.innerHTML = `
-            <td class="px-4 py-3 whitespace-nowrap text-sm text-text_dark">${formatTimestamp(app.created_at)}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-text_dark">${app.name}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-sm text-text_dark">
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-400">${formatTimestamp(app.created_at)}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-white">${app.name}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-400">
                 <a href="${waLink}" target="_blank" class="text-success hover:text-green-600 font-semibold flex items-center space-x-1 transition duration-300">
                     ${app.phone} 
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -193,15 +191,15 @@ function renderTable(applications) {
                         </svg>
                 </a>
             </td>
-            <td class="px-4 py-3 whitespace-nowrap text-sm text-text_dark">${app.room_type}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-secondary">${app.room_type}</td>
             <td class="px-4 py-3 whitespace-nowrap">
                 <span id="status-${app.id}" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${STATUS_COLORS[app.status]}">
                     ${app.status}
                 </span>
             </td>
-            <td class="px-4 py-3 text-sm text-gray-600 max-w-xs overflow-hidden truncate">${app.comment || '—'}</td>
+            <td class="px-4 py-3 text-sm text-gray-400 max-w-xs overflow-hidden truncate">${app.comment || '—'}</td>
             <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                <select data-id="${app.id}" onchange="updateApplicationStatus(this)" class="bg-gray-100 border border-border_light text-text_dark p-1 rounded-lg focus:ring-primary focus:border-primary">
+                <select data-id="${app.id}" onchange="updateApplicationStatus(this)" class="bg-gray-700 border border-gray-600 text-white p-1 rounded-lg focus:ring-secondary focus:border-secondary">
                     ${statusSelectOptions}
                 </select>
             </td>
@@ -229,7 +227,7 @@ async function updateApplicationStatus(selectElement) {
             .from(TABLE_NAME)
             .update({ status: newStatus })
             .eq('id', id)
-            .select(); // Добавляем .select() для возврата данных и правильной работы RLS
+            .select();
 
         if (error) throw error;
 
@@ -239,9 +237,7 @@ async function updateApplicationStatus(selectElement) {
     } catch (error) {
         console.error('Ошибка обновления статуса:', error);
         alert('Ошибка при обновлении статуса. См. консоль.');
-        statusSpan.className = originalStatusClass; 
-        // Откатить выпадающее меню на предыдущее значение
-        // Это сложнее без запоминания, поэтому лучше просто перезагрузить данные
+        // Если ошибка, откатываемся к последнему рабочему состоянию
         loadApplications(); 
     }
     
