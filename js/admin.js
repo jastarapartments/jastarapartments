@@ -3,6 +3,7 @@
 // --- 1. НАСТРОЙКА SUPABASE (Используем те же ключи) ---
 const SUPABASE_URL = "https://vfignoxzqjjmghzsyyqr.supabase.co"; // <-- Вставьте свой URL
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmaWdub3h6cWpqbWdoenN5eXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU4MTIsImV4cCI6MjA3NzQyMTgxMn0.1sRa8C4vnwYs3ll9CwExBJ6aoLwG924CUpKRWs7B_ww"; // <-- Вставьте свой публичный ANON KEY
+
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ------------------------------------------------------------------
 
@@ -15,11 +16,6 @@ const loginMessage = document.getElementById('login-message');
 const tableBody = document.getElementById('applications-table-body');
 const noApplicationsMessage = document.getElementById('no-applications-message');
 
-// Фиктивные данные для входа (для демо-версии)
-const ADMIN_EMAIL = 'admin@jastar.kz';
-const ADMIN_PASSWORD = 'admin123';
-const AUTH_KEY = 'jastar_admin_logged_in';
-
 const STATUS_COLORS = {
     'Новая': 'bg-primary text-white',
     'В обработке': 'bg-secondary text-text_dark',
@@ -29,13 +25,16 @@ const STATUS_COLORS = {
 const STATUS_OPTIONS = ["Новая", "В обработке", "Одобрена", "Отклонена"];
 
 
-// --- 2. ЛОГИКА АВТОРИЗАЦИИ ---
+// --- 2. ЛОГИКА АВТОРИЗАЦИИ (ЧЕРЕЗ SUPABASE) ---
 
 /**
- * Проверяет, авторизован ли пользователь.
+ * Проверяет активную сессию Supabase.
  */
-function checkAuth() {
-    if (localStorage.getItem(AUTH_KEY) === 'true') {
+async function checkAuth() {
+    // Получаем текущую сессию
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session) {
         showDashboard();
         loadApplications();
     } else {
@@ -44,7 +43,7 @@ function checkAuth() {
 }
 
 /**
- * Отображает дашборд и скрывает форму входа.
+ * Отображает дашборд.
  */
 function showDashboard() {
     loginSection.classList.add('hidden');
@@ -52,31 +51,44 @@ function showDashboard() {
 }
 
 /**
- * Отображает форму входа и скрывает дашборд.
+ * Отображает форму входа.
  */
 function showLogin() {
     dashboardSection.classList.add('hidden');
     loginSection.classList.remove('hidden');
 }
 
-loginForm.addEventListener('submit', (e) => {
+loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('admin-email').value;
     const password = document.getElementById('admin-password').value;
 
-    // Простая проверка (ТОЛЬКО ДЛЯ ДЕМО-ПРОЕКТА)
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        localStorage.setItem(AUTH_KEY, 'true');
-        loginMessage.classList.add('hidden');
-        checkAuth();
-    } else {
-        loginMessage.textContent = 'Неверный логин или пароль.';
+    loginMessage.classList.add('hidden');
+    const submitBtn = loginForm.querySelector('button[type="submit"]');
+    submitBtn.textContent = 'Вход...';
+    submitBtn.disabled = true;
+
+    // РЕАЛЬНЫЙ ВХОД ЧЕРЕЗ SUPABASE.AUTH
+    const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+    });
+
+    submitBtn.textContent = 'Войти';
+    submitBtn.disabled = false;
+
+    if (error) {
+        console.error('Ошибка входа Supabase:', error);
+        loginMessage.textContent = '❌ Неверный email или пароль.';
         loginMessage.classList.remove('hidden');
+    } else {
+        // Успешный вход
+        checkAuth(); 
     }
 });
 
-logoutButton.addEventListener('click', () => {
-    localStorage.removeItem(AUTH_KEY);
+logoutButton.addEventListener('click', async () => {
+    await supabase.auth.signOut();
     checkAuth();
 });
 
@@ -84,8 +96,6 @@ logoutButton.addEventListener('click', () => {
 
 /**
  * Форматирует дату.
- * @param {string} isoDate - Дата в формате ISO.
- * @returns {string} - Отформатированная дата.
  */
 function formatTimestamp(isoDate) {
     const date = new Date(isoDate);
@@ -111,7 +121,7 @@ async function loadApplications() {
 
         if (error) throw error;
 
-        tableBody.innerHTML = ''; // Очистка
+        tableBody.innerHTML = ''; 
         noApplicationsMessage.classList.add('hidden');
 
         if (applications.length === 0) {
@@ -123,7 +133,6 @@ async function loadApplications() {
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-800 transition duration-150';
             
-            // Выпадающий список для статуса
             const statusSelect = STATUS_OPTIONS.map(status => 
                 `<option value="${status}" ${app.status === status ? 'selected' : ''}>${status}</option>`
             ).join('');
@@ -156,7 +165,6 @@ async function loadApplications() {
 
 /**
  * Обновляет статус заявки в Supabase.
- * @param {HTMLSelectElement} selectElement - Выпадающий список, вызвавший изменение.
  */
 async function updateApplicationStatus(selectElement) {
     const id = selectElement.getAttribute('data-id');
@@ -185,9 +193,8 @@ async function updateApplicationStatus(selectElement) {
         // Ошибка
         console.error('Ошибка обновления статуса:', error);
         alert('Ошибка при обновлении статуса. См. консоль.');
-        statusSpan.className = originalStatusClass; // Возвращаем старый класс
-        statusSpan.textContent = selectElement.options[selectElement.selectedIndex].text; // Оставляем старый статус
-        selectElement.value = selectElement.options[0].value; // Сброс выбора
+        statusSpan.className = originalStatusClass; 
+        selectElement.value = selectElement.options[selectElement.selectedIndex].value; // Сохраняем старый статус
     }
     
     selectElement.disabled = false;
