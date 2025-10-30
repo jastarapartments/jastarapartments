@@ -37,7 +37,7 @@
             <a href="#hero-section" class="text-2xl font-extrabold text-primary">Jastar <span class="text-text_dark">Apartments</span></a>
 
             <nav class="hidden md:flex space-x-6 text-text_dark font-medium">
-                <a href="#hero-section" class="hover:text-primary transition duration-300">Главная</a>
+                <a href="#hero-section" class="text-primary transition duration-300 font-semibold">Главная</a>
                 <a href="rooms.html" class="hover:text-primary transition duration-300">Комнаты</a> 
                 <a href="#gallery" class="hover:text-primary transition duration-300">Галерея</a> 
                 <a href="#amenities" class="hover:text-primary transition duration-300">Удобства</a>
@@ -58,7 +58,7 @@
         </div>
         
         <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-2 transition duration-300">
-            <a href="#hero-section" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Главная</a>
+            <a href="#hero-section" class="mobile-link block px-4 py-2 text-primary hover:bg-gray-50 font-semibold">Главная</a>
             <a href="rooms.html" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Комнаты</a>
             <a href="#gallery" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Галерея</a>
             <a href="#amenities" class="mobile-link block px-4 py-2 text-text_dark hover:bg-gray-50">Удобства</a>
@@ -260,6 +260,52 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/app.js"></script>
+    
+    <script>
+        // Функция для переключения мобильного меню
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Функция для открытия модального окна
+        function openModal(roomType) {
+            const modal = document.getElementById('application-modal');
+            const roomSelect = document.getElementById('room_type');
+            
+            // Устанавливаем выбранный тип комнаты в форме модала
+            if (roomType) {
+                for (let i = 0; i < roomSelect.options.length; i++) {
+                    if (roomSelect.options[i].value === roomType) {
+                        roomSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal() {
+            const modal = document.getElementById('application-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            // Сброс сообщения и кнопки
+            document.getElementById('application-form').reset();
+            document.getElementById('submit-button').textContent = 'Отправить заявку';
+            document.getElementById('submit-button').disabled = false;
+            document.getElementById('form-message').classList.add('hidden');
+        }
+
+        // Закрытие модального окна по клику вне его
+        document.getElementById('application-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 </html>
