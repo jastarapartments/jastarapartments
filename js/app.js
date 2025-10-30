@@ -4,6 +4,7 @@
 const SUPABASE_URL = "https://your-project-id.supabase.co"; // <-- Вставьте свой URL
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // <-- Вставьте свой публичный ANON KEY
 
+// Убедитесь, что вы подключили библиотеку Supabase в HTML перед этим скриптом!
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ------------------------------------------------------------------
 
@@ -15,21 +16,19 @@ const submitButton = document.getElementById('submit-button');
 const mobileMenu = document.getElementById('mobile-menu');
 
 
-// --- 2. ФУНКЦИИ ИНТЕРФЕЙСА ---
+// --- 2. ФУНКЦИИ ИНТЕРФЕЙСА (УЛУЧШЕНЫ) ---
 
 /**
  * Открывает модальное окно и предзаполняет тип комнаты.
- * @param {string} roomType - Тип комнаты (2-местная, 3-местная, Общая).
  */
 function openModal(roomType) {
-    // Сбрасываем форму и сообщение
+    // Сброс и подготовка формы
     form.reset();
     formMessage.classList.add('hidden');
     formMessage.textContent = '';
     submitButton.disabled = false;
     submitButton.textContent = 'Отправить заявку';
-    submitButton.classList.remove('bg-success', 'bg-error', 'opacity-50');
-    submitButton.classList.add('bg-primary', 'hover:bg-blue-700');
+    submitButton.className = 'w-full bg-primary text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-700 transition duration-300';
     
     // Предзаполнение поля выбора комнаты
     if (roomType) {
@@ -37,10 +36,6 @@ function openModal(roomType) {
     }
 
     modal.classList.remove('hidden');
-    // Небольшая задержка для анимации
-    setTimeout(() => {
-        modal.classList.add('opacity-100');
-    }, 10);
     document.body.style.overflow = 'hidden'; // Запрет прокрутки фона
 }
 
@@ -49,27 +44,26 @@ function openModal(roomType) {
  */
 function closeModal() {
     modal.classList.add('hidden');
-    modal.classList.remove('opacity-100');
     document.body.style.overflow = ''; // Возобновление прокрутки фона
 }
 
 /**
  * Переключает видимость мобильного меню (бургер).
+ * Управляет прокруткой фона.
  */
 function toggleMobileMenu() {
     mobileMenu.classList.toggle('hidden');
+    if (!mobileMenu.classList.contains('hidden')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
 }
 
-/**
- * Плавный скролл к секции комнат.
- */
-function scrollToRooms() {
-    document.getElementById('rooms').scrollIntoView({ behavior: 'smooth' });
-}
 
+// --- 3. ОБРАБОТЧИКИ СОБЫТИЙ ---
 
-// --- 3. ЛОГИКА ОТПРАВКИ ЗАЯВКИ (SUPABASE) ---
-
+// 3.1. Отправка формы в Supabase
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -84,14 +78,14 @@ form.addEventListener('submit', async (e) => {
 
     try {
         const { error } = await supabase
-            .from('applications') // Название таблицы из ТЗ
+            .from('applications')
             .insert([
                 { 
                     name, 
                     phone, 
                     room_type, 
                     comment, 
-                    status: 'Новая' // Статус по умолчанию
+                    status: 'Новая' 
                 },
             ]);
 
@@ -102,10 +96,8 @@ form.addEventListener('submit', async (e) => {
         formMessage.textContent = '✅ Спасибо! Мы свяжемся с вами в ближайшее время.';
         formMessage.className = 'mt-4 text-center font-semibold text-success';
         submitButton.textContent = 'Успешно отправлено!';
-        submitButton.classList.remove('bg-primary', 'hover:bg-blue-700', 'opacity-50');
-        submitButton.classList.add('bg-success');
+        submitButton.className = 'w-full bg-success text-white py-3 rounded-xl font-bold text-lg opacity-80 cursor-not-allowed';
         
-        // Автоматически закрыть модалку через 3 секунды
         setTimeout(closeModal, 3000);
 
     } catch (error) {
@@ -121,15 +113,34 @@ form.addEventListener('submit', async (e) => {
     formMessage.classList.remove('hidden');
 });
 
-// Добавляем глобальные функции для доступа из HTML
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.toggleMobileMenu = toggleMobileMenu;
-window.scrollToRooms = scrollToRooms;
 
-// Закрытие модалки по клику вне формы
+// 3.2. Закрытие модалки по клику вне формы
 modal.addEventListener('click', (e) => {
     if (e.target === modal) {
         closeModal();
     }
 });
+
+// 3.3. Закрытие модалки по клавише ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+    }
+});
+
+// 3.4. Закрытие мобильного меню при клике на якорь (для лучшей адаптивности)
+document.querySelectorAll('#mobile-menu a').forEach(link => {
+    if (link.getAttribute('href').startsWith('#')) {
+        link.addEventListener('click', () => {
+            if (!mobileMenu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+        });
+    }
+});
+
+
+// Добавляем глобальные функции для доступа из HTML
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.toggleMobileMenu = toggleMobileMenu;
