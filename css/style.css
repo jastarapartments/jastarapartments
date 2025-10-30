@@ -1,29 +1,43 @@
-/*
- * Файл: css/style.css
- * Кастомные стили для Jastar Apartments
- */
+/* Базовые стили для сброса и шрифта */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
 
-/* Применение шрифта Poppins ко всему телу документа */
-body {
-    font-family: 'Poppins', sans-serif;
-    /* Установка плавного скролла для лучшего UX */
-    scroll-behavior: smooth;
+/* Стилизация для карты 2GIS */
+.map-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
 }
 
-/* Эффект при наведении на карточки, согласно ТЗ (мягкие тени) */
-.card-hover:hover {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); /* Более выраженная тень */
+.map-container iframe {
+  width: 100%;
+  height: 450px;
+  display: block;
+  border: none;
 }
 
-/* Утилита для скрытия/показа модального окна с анимацией */
-.modal-fade-in {
-    opacity: 1;
-    visibility: visible;
-}
-.modal-fade-out {
-    opacity: 0;
-    visibility: hidden;
+.map-footer {
+  text-align: right;
+  background: #f8fafc;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(0,0,0,0.05);
 }
 
-/* Стили для скроллбара в админке (необязательно, но приятно) */
-/* (Будут добавлены в admin.css, если вы решите их разделить) */
+.map-open-link {
+  color: #1D4ED8;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.map-open-link:hover {
+  color: #1E40AF;
+}
+
+@media (max-width: 640px) {
+  .map-container iframe {
+    height: 300px;
+  }
+}
