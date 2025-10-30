@@ -103,7 +103,6 @@ function formatTimestamp(isoDate) {
 
 /**
  * Очищает номер телефона, оставляя только цифры, для ссылки WhatsApp.
- * Например: +7 (707) 123-45-67 -> 77071234567
  */
 function formatPhoneNumberForWhatsApp(phone) {
     // Удаляем все, кроме цифр
@@ -157,11 +156,12 @@ async function loadApplications() {
             const waNumber = formatPhoneNumberForWhatsApp(app.phone);
             const waLink = `https://wa.me/${waNumber}`;
 
+            // ИЗМЕНЕНИЕ ЗДЕСЬ: text-secondary (белый) по умолчанию, hover:text-success (зеленый) при наведении.
             row.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${formatTimestamp(app.created_at)}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${app.name}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                    <a href="${waLink}" target="_blank" class="text-success hover:text-green-400 font-bold flex items-center space-x-1 transition duration-300" title="Открыть в WhatsApp">
+                    <a href="${waLink}" target="_blank" class="text-secondary hover:text-success font-bold flex items-center space-x-1 transition duration-300" title="Открыть в WhatsApp">
                         ${app.phone} 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.77.56 3.44 1.55 4.88l-1.63 5.97 6.13-1.61c1.37.75 2.95 1.15 4.02 1.15h.06c5.46 0 9.9-4.44 9.9-9.9.01-5.46-4.43-9.9-9.89-9.9zm4.78 13.92s-.6.28-1.74.8c-.14.07-.38.16-.62.25-.83.29-1.92.35-3.05-.09-1.25-.49-2.2-1.42-2.82-2.58-.61-1.15-1.04-2.67-.18-3.79.6-.74 1.25-1.07 1.87-1.4.15-.08.3-.12.44-.12h.02c.38 0 .61.02.82.02.13 0 .33.02.66.86.33.84.85 2.11 1.05 2.53.2.42.33.51.57.87.24.36.4.38.64.18.91-.73 1.76-1.57 2.45-2.22.68-.65 1.34-1.27 1.8-1.55.45-.27.7-.42.94-.42.23 0 .38.07.47.11.23.11.49.25.68.42.19.16.29.35.34.46.04.1.08.21.08.34s-.1.4-.23.63c-.12.23-.74.84-.96 1.05-.22.2-.47.45-.47.88 0 .44.29.9.52 1.13.23.23.49.46.73.7.23.24.46.46.68.75.22.28.43.58.58.84.14.26.2.53.2.8 0 .3-.07.64-.19.92-.12.28-.27.5-.47.67s-.44.3-.76.43c-.32.13-.67.19-1.05.19z"/>
