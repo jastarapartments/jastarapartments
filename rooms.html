@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Комнаты Jastar Apartments — 2-местные и 3-местные</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/style.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     
     <script>
         tailwind.config = {
@@ -22,7 +23,6 @@
                         hero_light: '#076c8c',
                     },
                     fontFamily: {
-                        // Tailwind будет использовать Poppins, как указано в вашем style.css
                         sans: ['Poppins', 'sans-serif'],
                     }
                 }
@@ -72,117 +72,125 @@
             <a href="admin.html" class="block px-4 py-2 text-text_dark hover:bg-gray-50 font-semibold border-t mt-2 pt-2">🔐 Вход для админов</a>
         </div>
     </header>
-    
+
     <section class="bg-primary text-white pt-16 pb-20">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4">
-                🏡 Наши комнаты и цены
+                ✨ Комфорт и функциональность в каждой комнате
             </h1>
-            <p class="text-xl lg:text-2xl opacity-90 font-light">
-                Выберите свой идеальный дом: от **80 000 ₸** в месяц.
+            <p class="text-xl lg:text-2xl opacity-90 font-light max-w-3xl mx-auto">
+                Все наши комнаты оформлены в едином современном стиле. Вы выбираете только количество соседей.
             </p>
         </div>
     </section>
 
-    <section id="room-two" class="py-16 lg:py-24">
+    <section id="room-gallery" class="py-16 lg:py-24 bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-12 items-center bg-white p-6 md:p-12 rounded-2xl shadow-2xl border-l-8 border-secondary card-hover transition duration-500">
-                
-                <div>
-                    
-                    <img src="images/room_two_bed.jpg" alt="Фотография 2-местной комнаты" class="rounded-xl shadow-xl w-full object-cover aspect-video lg:aspect-square">
-                    <p class="text-center mt-3 text-sm text-gray-500">Пример оформления 2-местной комнаты. Мебель включена.</p>
-                </div>
-
-                <div>
-                    <h2 class="text-5xl font-extrabold text-text_dark mb-4">
-                        <span class="text-secondary">Премиум</span> 2-местная комната
-                    </h2>
-                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-                        Идеальный выбор для тех, кто ценит **пространство и личный комфорт**. Наша 2-местная комната предлагает максимум удобств для продуктивной учебы и полноценного отдыха. Это формат **мини-квартиры**, где вы будете жить всего с одним соседом.
-                    </p>
-                    
-                    <div class="space-y-3 mb-8">
-                        <p class="flex items-center text-lg font-medium text-text_dark">
-                            <span class="text-success mr-3">✅</span> **Собственный санузел** с душем
-                        </p>
-                        <p class="flex items-center text-lg font-medium text-text_dark">
-                            <span class="text-success mr-3">✅</span> Большие рабочие столы и эргономичные стулья
-                        </p>
-                        <p class="flex items-center text-lg font-medium text-text_dark">
-                            <span class="text-success mr-3">✅</span> Индивидуальный шкаф и тумбы
-                        </p>
-                        <p class="flex items-center text-lg font-medium text-text_dark">
-                            <span class="text-success mr-3">✅</span> Эффективная звукоизоляция и кондиционер
-                        </p>
+            <h2 class="text-4xl font-extrabold text-center mb-10 text-text_dark">🖼️ Посмотрите, как выглядят комнаты</h2>
+            
+            <div class="relative overflow-hidden">
+                <div class="flex space-x-4 overflow-x-scroll snap-x snap-mandatory pb-4">
+                    <div class="flex-shrink-0 w-4/5 sm:w-1/2 lg:w-1/3 snap-center rounded-xl shadow-lg border-4 border-gray-100 overflow-hidden">
+                        
+                        <img src="images/room_common_1.jpg" alt="Интерьер комнаты Jastar Apartments" class="w-full h-72 object-cover transition duration-300 hover:scale-105">
                     </div>
-
-                    <p class="text-4xl font-bold text-primary mb-6">
-                        Цена: <span class="text-6xl">100 000 ₸</span> <span class="text-xl font-normal">/ месяц за место</span>
-                    </p>
-
-                    <button onclick="openModal('2-местная')" class="w-full sm:w-auto bg-secondary text-text_dark px-12 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-amber-400 transition duration-300 transform hover:scale-105">
-                        Забронировать 2-местную
-                    </button>
-                </div>
+                    <div class="flex-shrink-0 w-4/5 sm:w-1/2 lg:w-1/3 snap-center rounded-xl shadow-lg border-4 border-gray-100 overflow-hidden">
+                        
+                        <img src="images/room_bathroom.jpg" alt="Санузел в комнате" class="w-full h-72 object-cover transition duration-300 hover:scale-105">
+                    </div>
+                    <div class="flex-shrink-0 w-4/5 sm:w-1/2 lg:w-1/3 snap-center rounded-xl shadow-lg border-4 border-gray-100 overflow-hidden">
+                        
+                        <img src="images/room_desk_area.jpg" alt="Рабочее место студента" class="w-full h-72 object-cover transition duration-300 hover:scale-105">
+                    </div>
+                    <div class="flex-shrink-0 w-4/5 sm:w-1/2 lg:w-1/3 snap-center rounded-xl shadow-lg border-4 border-gray-100 overflow-hidden">
+                        
+                        <img src="images/room_closet.jpg" alt="Шкаф для одежды" class="w-full h-72 object-cover transition duration-300 hover:scale-105">
+                    </div>
+                    </div>
+                <p class="text-center mt-4 text-sm text-gray-500">
+                    * Прокрутите, чтобы увидеть больше! (Фото 2-местной и 3-местной комнат одинаковые по комплектации).
+                </p>
             </div>
         </div>
     </section>
 
-    <section id="room-three" class="py-16 lg:py-24 bg-background">
+    <section id="room-selection" class="py-16 lg:py-24 bg-background">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-12 items-center bg-white p-6 md:p-12 rounded-2xl shadow-2xl border-l-8 border-primary card-hover transition duration-500">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-text_dark">💳 Выберите свой тариф</h2>
+
+            <div class="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 
-                <div class="lg:order-2">
-                    <h2 class="text-5xl font-extrabold text-text_dark mb-4">
-                        <span class="text-primary">Комфорт</span> 3-местная комната
-                    </h2>
-                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-                        **Самый популярный и доступный** вариант. Просторная комната для трех студентов с комфортными рабочими зонами и личным пространством. Отличный способ найти новых друзей и партнеров для совместной учебы!
-                    </p>
+                <div class="bg-white p-8 rounded-2xl shadow-2xl border-t-8 border-secondary card-hover transition duration-500">
+                    <h3 class="text-3xl font-extrabold text-secondary mb-2">2-местная комната</h3>
+                    <p class="text-gray-500 mb-6">Максимум личного пространства, минимум соседей.</p>
                     
-                    <div class="space-y-3 mb-8">
-                        <p class="flex items-center text-lg font-medium text-text_dark">
-                            <span class="text-success mr-3">✅</span> **Собственный санузел** в комнате
+                    <div class="flex items-end mb-8">
+                        <p class="text-6xl font-bold text-primary">100 000 ₸</p>
+                        <span class="text-xl font-medium text-gray-500 ml-2">/ месяц за место</span>
+                    </div>
+
+                    <div class="space-y-4 mb-10">
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-success">👤</span> Всего **1 сосед**
                         </p>
-                        <p class="flex items-center text-lg font-medium text-text_dark">
-                            <span class="text-success mr-3">✅</span> Увеличенные зоны хранения для каждого
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-primary">📐</span> Самая большая площадь на человека
                         </p>
-                        <p class="flex items-center text-lg font-medium text-text_dark">
-                            <span class="text-success mr-3">✅</span> Три полноценных спальных и рабочих места
-                        </p>
-                        <p class="flex items-center text-lg font-medium text-text_dark">
-                            <span class="text-success mr-3">✅</span> Современная мебель и освещение
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-success">🛁</span> Включен личный санузел и душ
                         </p>
                     </div>
 
-                    <p class="text-4xl font-bold text-primary mb-6">
-                        Цена: <span class="text-6xl">80 000 ₸</span> <span class="text-xl font-normal">/ месяц за место</span>
-                    </p>
-
-                    <button onclick="openModal('3-местная')" class="w-full sm:w-auto bg-primary text-white px-12 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
-                        Забронировать 3-местную
+                    <button onclick="openModal('2-местная')" class="w-full bg-secondary text-text_dark px-12 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-amber-400 transition duration-300 transform hover:scale-105">
+                        Оставить заявку на 2-местную
                     </button>
                 </div>
 
-                <div class="lg:order-1">
+                <div class="bg-white p-8 rounded-2xl shadow-2xl border-t-8 border-primary card-hover transition duration-500">
+                    <h3 class="text-3xl font-extrabold text-primary mb-2">3-местная комната</h3>
+                    <p class="text-gray-500 mb-6">Самый популярный и экономичный вариант.</p>
                     
-                    <img src="images/room_three_bed.jpg" alt="Фотография 3-местной комнаты" class="rounded-xl shadow-xl w-full object-cover aspect-video lg:aspect-square">
-                    <p class="text-center mt-3 text-sm text-gray-500">Пример оформления 3-местной комнаты. Свободно и функционально.</p>
+                    <div class="flex items-end mb-8">
+                        <p class="text-6xl font-bold text-primary">80 000 ₸</p>
+                        <span class="text-xl font-medium text-gray-500 ml-2">/ месяц за место</span>
+                    </div>
+
+                    <div class="space-y-4 mb-10">
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-success">👥</span> Всего **2 соседа**
+                        </p>
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-primary">💵</span> Лучшая цена на рынке
+                        </p>
+                        <p class="flex items-center font-semibold text-text_dark">
+                            <span class="text-2xl mr-3 text-success">🛁</span> Включен личный санузел и душ
+                        </p>
+                    </div>
+
+                    <button onclick="openModal('3-местная')" class="w-full bg-primary text-white px-12 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                        Оставить заявку на 3-местную
+                    </button>
                 </div>
             </div>
-        </div>
-    </section>
+            
+            <div class="mt-16 text-center max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg border-l-4 border-success">
+                <h4 class="text-2xl font-bold text-text_dark mb-4">Что есть в каждой комнате (2-х и 3-х местной):</h4>
+                <ul class="grid sm:grid-cols-2 gap-3 text-lg text-gray-700 text-left">
+                    <li class="flex items-center">
+                        <span class="text-success mr-2">✔️</span> Собственный санузел
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-success mr-2">✔️</span> Индивидуальный шкаф
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-success mr-2">✔️</span> Рабочий стол и стул
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-success mr-2">✔️</span> Кондиционер (сплит-система)
+                    </li>
+                </ul>
+            </div>
 
-    <section class="py-16 lg:py-24 bg-primary text-white text-center">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-extrabold mb-4">🔥 Бронируйте сейчас!</h2>
-            <p class="text-xl mb-8 opacity-90">
-                Количество мест ограничено. Свяжитесь с нами, чтобы зафиксировать свое место.
-            </p>
-            <a href="tel:+77074986836" class="bg-secondary text-text_dark px-12 py-4 rounded-xl font-bold text-lg shadow-2xl hover:bg-amber-400 transition duration-300 transform hover:scale-105">
-                Позвонить сейчас: +7 (707) 498 68 36
-            </a>
         </div>
     </section>
 
@@ -242,7 +250,7 @@
     <script src="js/app.js"></script>
     
     <script>
-        // Функции для модального окна и мобильного меню
+        // Функции для мобильного меню и модального окна
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
@@ -252,7 +260,6 @@
             const modal = document.getElementById('application-modal');
             const roomSelect = document.getElementById('room_type');
             
-            // Устанавливаем выбранный тип комнаты
             if (roomType) {
                 for (let i = 0; i < roomSelect.options.length; i++) {
                     if (roomSelect.options[i].value === roomType) {
@@ -270,14 +277,13 @@
             const modal = document.getElementById('application-modal');
             modal.classList.add('hidden');
             document.body.style.overflow = 'auto';
+            
+            document.getElementById('application-form').reset();
+            const submitButton = document.getElementById('submit-button');
+            submitButton.textContent = 'Отправить заявку';
+            submitButton.disabled = false;
+            document.getElementById('form-message').classList.add('hidden');
         }
-
-        // Закрытие модального окна по клику вне его
-        document.getElementById('application-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
     </script>
 
 </body>
