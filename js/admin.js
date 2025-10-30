@@ -4,8 +4,10 @@
 const SUPABASE_URL = "https://vfignoxzqjjmghzsyyqr.supabase.co"; // <-- Вставьте свой URL
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmaWdub3h6cWpqbWdoenN5eXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU4MTIsImV4cCI6MjA3NzQyMTgxMn0.1sRa8C4vnwYs3ll9CwExBJ6aoLwG924CUpKRWs7B_ww"; // <-- Вставьте свой публичный ANON KEY
 
+// Инициализация клиента Supabase
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-// ------------------------------------------------------------------
+// ===================================================================
+
 
 // Элементы DOM
 const loginSection = document.getElementById('login-section');
@@ -25,19 +27,21 @@ const STATUS_COLORS = {
 const STATUS_OPTIONS = ["Новая", "В обработке", "Одобрена", "Отклонена"];
 
 
-// --- 2. ЛОГИКА АВТОРИЗАЦИИ (ЧЕРЕЗ SUPABASE) ---
+// --- 2. ЛОГИКА АВТОРИЗАЦИИ (ТОЛЬКО ЧЕРЕЗ SUPABASE) ---
 
 /**
- * Проверяет активную сессию Supabase.
+ * Проверяет активную сессию Supabase и решает, что показать: дашборд или форму входа.
  */
 async function checkAuth() {
-    // Получаем текущую сессию
+    // Используем Supabase, чтобы проверить, авторизован ли пользователь (админ)
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session) {
+        // Если сессия есть, показываем дашборд и загружаем данные
         showDashboard();
         loadApplications();
     } else {
+        // Если сессии нет, показываем форму входа
         showLogin();
     }
 }
@@ -79,7 +83,7 @@ loginForm.addEventListener('submit', async (e) => {
 
     if (error) {
         console.error('Ошибка входа Supabase:', error);
-        loginMessage.textContent = '❌ Неверный email или пароль.';
+        loginMessage.textContent = '❌ Неверный email или пароль. Убедитесь, что пользователь зарегистрирован в Supabase Auth.';
         loginMessage.classList.remove('hidden');
     } else {
         // Успешный вход
@@ -88,11 +92,13 @@ loginForm.addEventListener('submit', async (e) => {
 });
 
 logoutButton.addEventListener('click', async () => {
+    // Выход из Supabase
     await supabase.auth.signOut();
     checkAuth();
 });
 
 // --- 3. РАБОТА С ЗАЯВКАМИ (SUPABASE) ---
+// (Этот код остался без изменений, так как он уже работает с реальной базой данных)
 
 /**
  * Форматирует дату.
@@ -159,7 +165,7 @@ async function loadApplications() {
 
     } catch (error) {
         console.error('Ошибка загрузки заявок:', error);
-        tableBody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-error">Не удалось загрузить данные: ${error.message}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-error">Не удалось загрузить данные: ${error.message}. Проверьте RLS.</td></tr>`;
     }
 }
 
