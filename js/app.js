@@ -3,40 +3,40 @@
 // --- 1. НАСТРОЙКА SUPABASE (ОБЯЗАТЕЛЬНО ЗАМЕНИТЕ ЭТИ КЛЮЧИ!) ---
 const SUPABASE_URL = "https://vfignoxzqjjmghzsyyqr.supabase.co"; // <-- Вставьте свой URL
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmaWdub3h6cWpqbWdoenN5eXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU4MTIsImV4cCI6MjA3NzQyMTgxMn0.1sRa8C4vnwYs3ll9CwExBJ6aoLwG924CUpKRWs7B_ww"; // <-- Вставьте свой публичный ANON KEY
+// Файл: js/app.js
 
-// Убедитесь, что вы подключили библиотеку Supabase в HTML перед этим скриптом!
+// Инициализация клиента Supabase
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ------------------------------------------------------------------
 
+// Элементы DOM
 const modal = document.getElementById('application-modal');
 const form = document.getElementById('application-form');
-const roomSelect = document.getElementById('room_type');
+const roomTypeSelect = document.getElementById('room_type');
 const formMessage = document.getElementById('form-message');
 const submitButton = document.getElementById('submit-button');
-const mobileMenu = document.getElementById('mobile-menu');
 
 
-// --- 2. ФУНКЦИИ ИНТЕРФЕЙСА (УЛУЧШЕНЫ) ---
+// --- 2. ЛОГИКА МОДАЛЬНОГО ОКНА ---
 
 /**
- * Открывает модальное окно и предзаполняет тип комнаты.
+ * Открывает модальное окно и предустанавливает тип комнаты.
+ * @param {string} room - Тип комнаты для предустановки.
  */
-function openModal(roomType) {
-    // Сброс и подготовка формы
+function openModal(room) {
+    // Сбрасываем форму и сообщения
     form.reset();
     formMessage.classList.add('hidden');
-    formMessage.textContent = '';
     submitButton.disabled = false;
     submitButton.textContent = 'Отправить заявку';
-    submitButton.className = 'w-full bg-primary text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-700 transition duration-300';
     
-    // Предзаполнение поля выбора комнаты
-    if (roomType) {
-        roomSelect.value = roomType;
+    // Предустановка выбранной комнаты
+    if (room) {
+        roomTypeSelect.value = room;
     }
 
     modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Запрет прокрутки фона
+    document.body.classList.add('overflow-hidden'); // Блокировка прокрутки
 }
 
 /**
@@ -44,103 +44,95 @@ function openModal(roomType) {
  */
 function closeModal() {
     modal.classList.add('hidden');
-    document.body.style.overflow = ''; // Возобновление прокрутки фона
+    document.body.classList.remove('overflow-hidden');
 }
+
+
+// --- 3. ЛОГИКА ОТПРАВКИ ЗАЯВКИ (В SUPABASE) ---
 
 /**
- * Переключает видимость мобильного меню (бургер).
- * Управляет прокруткой фона.
+ * Отправляет данные заявки в таблицу 'applications' Supabase.
+ * @param {object} formData - Объект с данными формы.
  */
-function toggleMobileMenu() {
-    mobileMenu.classList.toggle('hidden');
-    if (!mobileMenu.classList.contains('hidden')) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
+async function sendApplication(formData) {
+    const { error } = await supabase
+        .from('applications')
+        .insert([
+            {
+                name: formData.name,
+                phone: formData.phone,
+                room_type: formData.room_type,
+                comment: formData.comment || null,
+            },
+        ]);
+
+    if (error) {
+        console.error('Ошибка при отправке заявки в Supabase:', error);
+        return false;
     }
+    return true;
 }
 
-
-// --- 3. ОБРАБОТЧИКИ СОБЫТИЙ ---
-
-// 3.1. Отправка формы в Supabase
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const room_type = document.getElementById('room_type').value;
-    const comment = document.getElementById('comment').value;
-
+    // Блокировка кнопки
     submitButton.disabled = true;
     submitButton.textContent = 'Отправка...';
-    submitButton.classList.add('opacity-50');
+    formMessage.classList.add('hidden');
 
-    try {
-        const { error } = await supabase
-            .from('applications')
-            .insert([
-                { 
-                    name, 
-                    phone, 
-                    room_type, 
-                    comment, 
-                    status: 'Новая' 
-                },
-            ]);
+    const data = new FormData(form);
+    const applicationData = {
+        name: data.get('name'),
+        phone: data.get('phone'),
+        room_type: data.get('room_type'),
+        comment: data.get('comment'),
+    };
 
-        if (error) throw error;
+    const success = await sendApplication(applicationData);
 
-        // Успех
-        form.reset();
-        formMessage.textContent = '✅ Спасибо! Мы свяжемся с вами в ближайшее время.';
-        formMessage.className = 'mt-4 text-center font-semibold text-success';
-        submitButton.textContent = 'Успешно отправлено!';
-        submitButton.className = 'w-full bg-success text-white py-3 rounded-xl font-bold text-lg opacity-80 cursor-not-allowed';
+    if (success) {
+        formMessage.textContent = '✅ Заявка успешно отправлена! Скоро мы с вами свяжемся.';
+        formMessage.classList.remove('hidden');
+        formMessage.classList.remove('text-error');
+        formMessage.classList.add('text-success');
+        form.reset(); // Сброс формы после успеха
         
-        setTimeout(closeModal, 3000);
+        // Опционально: закрыть модальное окно через 3 секунды
+        setTimeout(closeModal, 3000); 
 
-    } catch (error) {
-        // Ошибка
-        console.error('Ошибка при отправке заявки:', error);
-        formMessage.textContent = '❌ Ошибка отправки: Попробуйте позже.';
-        formMessage.className = 'mt-4 text-center font-semibold text-error';
-        submitButton.textContent = 'Повторить попытку';
+    } else {
+        formMessage.textContent = '❌ Произошла ошибка. Пожалуйста, попробуйте еще раз.';
+        formMessage.classList.remove('hidden');
+        formMessage.classList.remove('text-success');
+        formMessage.classList.add('text-error');
+    }
+
+    // Возврат кнопки в исходное состояние, если не было успеха
+    if (!success) {
         submitButton.disabled = false;
-        submitButton.classList.remove('opacity-50');
-    }
-    
-    formMessage.classList.remove('hidden');
-});
-
-
-// 3.2. Закрытие модалки по клику вне формы
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        closeModal();
+        submitButton.textContent = 'Отправить заявку';
     }
 });
 
-// 3.3. Закрытие модалки по клавише ESC
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-        closeModal();
-    }
-});
-
-// 3.4. Закрытие мобильного меню при клике на якорь (для лучшей адаптивности)
-document.querySelectorAll('#mobile-menu a').forEach(link => {
-    if (link.getAttribute('href').startsWith('#')) {
-        link.addEventListener('click', () => {
-            if (!mobileMenu.classList.contains('hidden')) {
-                toggleMobileMenu();
-            }
-        });
-    }
-});
-
-
-// Добавляем глобальные функции для доступа из HTML
+// Глобальные функции для доступа из HTML
 window.openModal = openModal;
 window.closeModal = closeModal;
-window.toggleMobileMenu = toggleMobileMenu;
+
+// Логика для мобильного меню
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+}
+
+// Закрытие мобильного меню при клике на ссылку
+document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', toggleMobileMenu);
+});
+
+// Закрытие модального окна по клику вне его
+modal.addEventListener('click', (e) => {
+    if (e.target.id === 'application-modal') {
+        closeModal();
+    }
+});
