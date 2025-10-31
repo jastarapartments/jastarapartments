@@ -3,128 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jastar Admin Panel</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Админ-панель — Jastar Apartments</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#2563EB',
-            secondary: '#FBBF24',
-            success: '#16A34A',
-            error: '#DC2626',
-            card_bg: '#1E293B',
-            border_light: '#334155',
-            dark_bg: '#f0e8d5',
-            text_light: '#F1F5F9'
-          },
-          fontFamily: { sans: ['Poppins', 'sans-serif'] }
-        }
-      }
-    };
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
-<body class="bg-dark_bg text-text_light font-sans min-h-screen">
-
-  <!-- ЭКРАН ВХОДА -->
-  <div id="login-screen" class="flex items-center justify-center h-screen">
-    <div class="bg-card_bg p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-border_light">
-      <div class="text-center mb-6">
-        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-3xl font-bold mx-auto">J</div>
-        <h2 class="text-2xl font-semibold mt-3 text-primary">Jastar Admin</h2>
-        <p class="text-gray-400 text-sm mt-1">Вход в систему</p>
-      </div>
-      <form id="login-form" class="space-y-6">
+<body class="bg-[#0d1117] text-white min-h-screen font-sans">
+  <!-- Экран входа -->
+  <section id="login-screen" class="flex items-center justify-center h-screen">
+    <div class="bg-[#161b22] p-8 rounded-2xl shadow-xl w-[380px]">
+      <h1 class="text-2xl font-semibold mb-6 text-center">Вход для администратора</h1>
+      <form id="login-form" class="space-y-4">
         <div>
-          <label for="email" class="block text-sm mb-1 text-gray-400">Email</label>
-          <input id="email" type="email" required class="w-full bg-dark_bg border border-border_light rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="admin@jastar.kz" />
+          <label class="block text-gray-400 mb-1">Email</label>
+          <input id="email" type="email" class="w-full bg-[#0d1117] border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         </div>
         <div>
-          <label for="password" class="block text-sm mb-1 text-gray-400">Пароль</label>
-          <input id="password" type="password" required class="w-full bg-dark_bg border border-border_light rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="••••••••" />
+          <label class="block text-gray-400 mb-1">Пароль</label>
+          <input id="password" type="password" class="w-full bg-[#0d1117] border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         </div>
-        <button id="login-button" type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
-          Войти
-        </button>
-        <p id="login-message" class="text-error hidden text-center text-sm mt-2 font-medium"></p>
+        <button id="login-button" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 rounded-lg py-2 font-semibold transition-all">Войти</button>
+        <p id="login-message" class="text-center text-red-400 hidden text-sm mt-2"></p>
       </form>
     </div>
-  </div>
+  </section>
 
-  <!-- АДМИН ПАНЕЛЬ -->
-  <div id="admin-panel" class="hidden min-h-screen flex">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-card_bg border-r border-border_light p-6 flex flex-col shadow-lg">
-      <div class="flex items-center space-x-3 mb-10 border-b border-border_light pb-4">
-        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">J</div>
-        <span class="text-xl font-semibold text-white">JASTAR</span>
+  <!-- Панель администратора -->
+  <section id="admin-panel" class="hidden p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-semibold">Админ-панель</h2>
+      <div class="flex items-center space-x-4">
+        <span id="admin-info" class="text-gray-400"></span>
+        <button id="logout-button" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold transition-all">Выйти</button>
       </div>
-      <nav class="flex-1 space-y-3">
-        <a href="#" class="flex items-center space-x-3 text-primary bg-blue-50/10 rounded-lg p-2 font-semibold">📊 <span>Дашборд</span></a>
-        <a href="#" class="flex items-center space-x-3 text-gray-400 hover:text-primary p-2 rounded-lg hover:bg-blue-50/10">📁 <span>Заявки</span></a>
-      </nav>
-      <div class="pt-6 border-t border-border_light mt-6">
-        <p id="admin-info" class="text-xs text-gray-400 mb-2 truncate"></p>
-        <button id="logout-button" class="w-full bg-error text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition">Выйти</button>
+    </div>
+
+    <!-- Статистика -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-[#161b22] rounded-xl p-4 text-center shadow">
+        <h3 class="text-gray-400 text-sm">Всего заявок</h3>
+        <p id="total-applications" class="text-3xl font-bold text-blue-400">0</p>
       </div>
-    </aside>
-
-    <!-- Main content -->
-    <main class="flex-1 p-6 md:p-10 bg-dark_bg overflow-y-auto">
-      <h1 class="text-3xl font-bold mb-8 text-primary">Панель управления</h1>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-        <div class="bg-card_bg p-6 rounded-xl shadow border-l-4 border-primary">
-          <p class="text-gray-400 text-sm">Всего заявок</p>
-          <h2 id="total-applications" class="text-4xl font-bold mt-2 text-white">0</h2>
-        </div>
-        <div class="bg-card_bg p-6 rounded-xl shadow border-l-4 border-secondary">
-          <p class="text-gray-400 text-sm">Новые</p>
-          <h2 id="new-applications" class="text-4xl font-bold mt-2 text-secondary">0</h2>
-        </div>
-        <div class="bg-card_bg p-6 rounded-xl shadow border-l-4 border-success">
-          <p class="text-gray-400 text-sm">Обработанные</p>
-          <h2 id="processed-applications" class="text-4xl font-bold mt-2 text-success">0</h2>
-        </div>
+      <div class="bg-[#161b22] rounded-xl p-4 text-center shadow">
+        <h3 class="text-gray-400 text-sm">Новые</h3>
+        <p id="new-applications" class="text-3xl font-bold text-yellow-400">0</p>
       </div>
-
-      <div class="bg-card_bg p-6 rounded-xl shadow mb-10">
-        <h3 class="text-lg font-semibold mb-4">График заявок</h3>
-        <canvas id="applicationsChart" height="300"></canvas>
+      <div class="bg-[#161b22] rounded-xl p-4 text-center shadow">
+        <h3 class="text-gray-400 text-sm">Обработанные</h3>
+        <p id="processed-applications" class="text-3xl font-bold text-green-400">0</p>
       </div>
+    </div>
 
-      <div class="bg-card_bg p-6 rounded-xl shadow">
-        <h3 class="text-lg font-semibold mb-4">Последние заявки</h3>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-border_light rounded-lg">
-            <thead class="bg-gray-700 text-gray-300 text-sm">
-              <tr>
-                <th class="py-3 px-4 text-left">Дата</th>
-                <th class="py-3 px-4 text-left">Имя</th>
-                <th class="py-3 px-4 text-left">Телефон</th>
-                <th class="py-3 px-4 text-left">Комната</th>
-                <th class="py-3 px-4 text-left">Статус</th>
-                <th class="py-3 px-4 text-left">Комментарий</th>
-                <th class="py-3 px-4 text-left">Действия</th>
-              </tr>
-            </thead>
-            <tbody id="applications-table-body" class="divide-y divide-border_light">
-              <tr><td colspan="7" class="p-6 text-center text-gray-500">Загрузка заявок...</td></tr>
-            </tbody>
-          </table>
-        </div>
+    <!-- Таблица заявок -->
+    <div class="bg-[#161b22] rounded-xl shadow overflow-hidden mb-6">
+      <table class="w-full text-sm">
+        <thead class="bg-[#1f2937] text-gray-300">
+          <tr>
+            <th class="px-4 py-3 text-left">Дата</th>
+            <th class="px-4 py-3 text-left">Имя</th>
+            <th class="px-4 py-3 text-left">Телефон</th>
+            <th class="px-4 py-3 text-left">Тип комнаты</th>
+            <th class="px-4 py-3 text-left">Статус</th>
+            <th class="px-4 py-3 text-left">Комментарий</th>
+            <th class="px-4 py-3 text-left">Действие</th>
+          </tr>
+        </thead>
+        <tbody id="applications-table-body" class="divide-y divide-gray-800"></tbody>
+      </table>
+    </div>
+
+    <!-- График -->
+    <div class="bg-[#161b22] rounded-xl p-6 shadow">
+      <h3 class="text-lg font-semibold mb-3">График заявок за неделю</h3>
+      <div class="h-64">
+        <canvas id="applicationsChart"></canvas>
       </div>
-    </main>
-  </div>
+    </div>
+  </section>
 
-  <!-- JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" src="./supabase.js"></script>
-  <script src="./admin.js"></script>
+  <!-- Скрипты -->
+  <script src="/js/supabase.js"></script>
+  <script src="/js/admin.js"></script>
 </body>
 </html>
