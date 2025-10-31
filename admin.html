@@ -1,119 +1,146 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель Jastar Apartments</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css"> 
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1D4ED8',
-                        secondary: '#FBBF24',
-                        background: '#F9FAFB', 
-                        text_dark: '#1E293B', // Основной темный цвет фона
-                        success: '#22C55E',
-                        error: '#EF4444',
-                        // Цвета для нового стиля админки
-                        dark_bg: '#121929', // Еще более темный фон
-                        card_bg: '#1E293B', // Фон карточек и таблицы
-                        border_light: '#374151',
-                    },
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Админ-панель Jastar Apartments</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    // Настройка Tailwind CSS для темной темы и кастомных цветов
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // Цвета бренда и статусов
+            primary: '#3B82F6', // Синий
+            secondary: '#FBBF24', // Желтый (Акцент)
+            success: '#22C55E',
+            error: '#EF4444',
+            // Цвета для темной темы
+            dark_bg: '#121929', // Основной очень темный фон
+            card_bg: '#1E293B', // Фон карточек и меню
+            border_light: '#374151', // Светлая граница для темного фона
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+  </script>
 </head>
-<body class="font-sans bg-dark_bg text-white"> 
 
-    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-dark_bg transition duration-500">
-        <div class="w-full max-w-sm bg-card_bg p-8 rounded-xl shadow-2xl transition duration-500 border border-gray-700">
-            <h2 class="text-3xl font-extrabold text-secondary text-center mb-8">🔑 Вход в Админ-панель</h2>
-            
-            <form id="login-form" class="space-y-6">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
-                    <input type="email" id="email" name="email" required class="w-full bg-gray-700 text-white border-0 p-3 rounded-lg focus:ring-primary focus:border-primary transition duration-300 placeholder-gray-400" placeholder="admin@jastar.kz">
-                </div>
-                
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
-                    <input type="password" id="password" name="password" required class="w-full bg-gray-700 text-white border-0 p-3 rounded-lg focus:ring-primary focus:border-primary transition duration-300 placeholder-gray-400" placeholder="••••••••">
-                </div>
-                
-                <button type="submit" class="w-full bg-primary text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-700 transition duration-300" id="login-button">
-                    Войти
-                </button>
-                
-                <p class="text-xs text-gray-400 text-center mt-4">
-                    Демо-данные: <span class="font-semibold">admin@jastar.kz</span> / <span class="font-semibold">admin123</span>
-                </p>
-                <p id="login-message" class="text-center font-semibold text-error hidden">Неверный логин или пароль.</p>
-            </form>
-        </div>
-    </div>
+<body class="font-sans bg-dark_bg text-white min-h-screen">
 
-    <div id="admin-panel" class="min-h-screen p-4 md:p-8 bg-dark_bg hidden">
-        
-        <div class="flex justify-between items-center mb-8 pb-4 border-b border-border_light">
-            <h1 class="text-3xl font-extrabold text-secondary">📊 Дашборд Заявок</h1>
-            <div class="flex items-center space-x-4">
-                 <span id="admin-info" class="text-sm font-medium text-gray-400">admin@jastar.kz</span>
-                <button id="logout-button" class="bg-error text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition duration-300">
-                    Выйти
-                </button>
-            </div>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-card_bg p-6 rounded-xl shadow-lg border-l-4 border-primary text-white">
-                <p class="text-sm font-semibold text-gray-400 mb-1">ВСЕГО ЗАЯВОК</p>
-                <p id="total-applications" class="text-4xl font-bold">0</p>
-            </div>
-            <div class="bg-card_bg p-6 rounded-xl shadow-lg border-l-4 border-secondary text-white">
-                <p class="text-sm font-semibold text-gray-400 mb-1">НОВЫЕ (Необработанные)</p>
-                <p id="new-applications" class="text-4xl font-bold text-secondary">0</p>
-            </div>
-            <div class="bg-card_bg p-6 rounded-xl shadow-lg border-l-4 border-success text-white">
-                <p class="text-sm font-semibold text-gray-400 mb-1">ОБРАБОТАННЫЕ</p>
-                <p id="processed-applications" class="text-4xl font-bold text-success">0</p>
-            </div>
-        </div>
+  <!-- 1. Экран входа (Темный, чистый, без демо-данных) -->
+  <div id="login-screen" class="flex items-center justify-center h-screen p-4">
+    <div class="bg-card_bg shadow-2xl rounded-2xl p-8 w-full max-w-sm border border-border_light">
+      <div class="flex flex-col items-center mb-8">
+        <!-- Логотип-заполнитель -->
+        <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-xl font-bold mb-3 text-card_bg">J</div>
+        <h2 class="text-2xl font-bold text-secondary">JASTAR Admin</h2>
+        <p class="text-gray-400 text-sm mt-1">Используйте учетные данные Supabase</p>
+      </div>
+      <form id="login-form" class="space-y-6">
+        <div>
+          <label for="email" class="block text-sm text-gray-400 font-medium mb-1">Email</label>
+          <input type="email" id="email" class="w-full bg-dark_bg text-white border border-border_light rounded-lg p-3 focus:ring-primary focus:border-primary outline-none placeholder-gray-500" placeholder="admin@jastar.kz" required>
+        </div>
+        <div>
+          <label for="password" class="block text-sm text-gray-400 font-medium mb-1">Пароль</label>
+          <input type="password" id="password" class="w-full bg-dark_bg text-white border border-border_light rounded-lg p-3 focus:ring-primary focus:border-primary outline-none placeholder-gray-500" placeholder="••••••••" required>
+        </div>
+        <button type="submit" id="login-button" class="w-full bg-primary text-white py-3 rounded-lg font-bold text-lg hover:bg-blue-600 transition">
+          Войти
+        </button>
+        <p id="login-message" class="text-center text-error hidden text-sm font-medium">Неверный логин или пароль.</p>
+      </form>
+    </div>
+  </div>
 
-        <div class="bg-card_bg p-6 rounded-xl shadow-xl">
-            <h3 class="text-xl font-bold text-white mb-4">Список последних заявок</h3>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-border_light">
-                    <thead class="bg-gray-700">
-                        <tr>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ДАТА</th>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ИМЯ</th>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ТЕЛЕФОН</th>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">КОМНАТА</th>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">СТАТУС</th>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">КОММЕНТАРИЙ</th>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ДЕЙСТВИЯ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="applications-table-body" class="bg-card_bg divide-y divide-border_light text-white"> 
-                        <tr><td colspan="7" class="p-6 text-center text-gray-500">Загрузка заявок...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-    </div>
+  <!-- 2. Рабочий дашборд (Темная тема) -->
+  <div id="admin-panel" class="hidden min-h-screen flex">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/admin.js"></script> 
+    <!-- Боковое меню -->
+    <aside class="w-64 bg-card_bg border-r border-border_light p-6 flex flex-col shadow-xl">
+      <div class="flex items-center space-x-3 mb-10 pb-4 border-b border-border_light">
+        <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-sm font-bold text-card_bg">J</div>
+        <span class="text-xl font-bold text-white">JASTAR</span>
+      </div>
+      <nav class="flex-1 space-y-4">
+        <a href="#" class="flex items-center space-x-3 text-primary font-semibold p-2 rounded-lg bg-dark_bg transition">
+          <span>📊</span><span class="text-white">Дашборд</span>
+        </a>
+        <a href="#" class="flex items-center space-x-3 text-gray-400 hover:text-primary transition p-2 rounded-lg hover:bg-dark_bg">
+          <span>📁</span><span>Заявки</span>
+        </a>
+      </nav>
+      <div class="mt-8 pt-4 border-t border-border_light">
+        <p id="admin-info" class="text-xs text-gray-500 mb-2 truncate"></p>
+        <button id="logout-button" class="w-full bg-error text-white rounded-lg py-2 font-semibold hover:bg-red-600 transition">Выйти</button>
+      </div>
+    </aside>
 
+    <!-- Основная часть -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+      <div class="flex justify-between items-center mb-8 pb-4 border-b border-border_light">
+        <h1 class="text-3xl font-bold text-white">Панель управления</h1>
+      </div>
+
+      <!-- Карточки -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+        <div class="bg-card_bg p-6 rounded-xl shadow-xl border-l-4 border-primary">
+          <p class="text-gray-400 text-sm font-medium">Всего заявок</p>
+          <h2 id="total-applications" class="text-4xl font-bold mt-2 text-white">0</h2>
+        </div>
+        <div class="bg-card_bg p-6 rounded-xl shadow-xl border-l-4 border-secondary">
+          <p class="text-gray-400 text-sm font-medium">Новые</p>
+          <h2 id="new-applications" class="text-4xl font-bold mt-2 text-secondary">0</h2>
+        </div>
+        <div class="bg-card_bg p-6 rounded-xl shadow-xl border-l-4 border-success">
+          <p class="text-gray-400 text-sm font-medium">Обработанные</p>
+          <h2 id="processed-applications" class="text-4xl font-bold mt-2 text-success">0</h2>
+        </div>
+      </div>
+
+      <!-- График Chart.js -->
+      <div class="bg-card_bg p-6 rounded-xl shadow-xl mb-10">
+        <h3 class="text-lg font-semibold mb-4 text-white">Динамика заявок за 7 дней</h3>
+        <div class="bg-card_bg p-4 rounded-xl">
+          <!-- Canvas для графика. Высота установлена для лучшей видимости -->
+          <canvas id="applicationsChart" height="300"></canvas>
+        </div>
+      </div>
+
+      <!-- Таблица -->
+      <div class="bg-card_bg p-6 rounded-xl shadow-xl">
+        <h3 class="text-lg font-semibold mb-4 text-white">Список последних заявок</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-border_light rounded-lg">
+            <thead class="bg-dark_bg text-gray-300 text-sm">
+              <tr>
+                <th class="py-3 px-4 text-left uppercase font-medium">Дата</th>
+                <th class="py-3 px-4 text-left uppercase font-medium">Имя</th>
+                <th class="py-3 px-4 text-left uppercase font-medium">Телефон</th>
+                <th class="py-3 px-4 text-left uppercase font-medium">Комната</th>
+                <th class="py-3 px-4 text-left uppercase font-medium">Статус</th>
+                <th class="py-3 px-4 text-left uppercase font-medium">Комментарий</th>
+                <th class="py-3 px-4 text-left uppercase font-medium">Действия</th>
+              </tr>
+            </thead>
+            <tbody id="applications-table-body" class="text-gray-300 divide-y divide-border_light">
+              <tr><td colspan="7" class="p-6 text-center text-gray-500">Загрузка заявок...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Подключаем Supabase и наш скрипт логики -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js"></script>
 </body>
 </html>
