@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Админ-панель Jastar Apartments</title>
+  <title>Jastar Admin Panel</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -17,96 +17,92 @@
             secondary: '#FBBF24',
             success: '#16A34A',
             error: '#DC2626',
-            bg_light: '#F9FAFB',
-            card_light: '#FFFFFF',
-            border_light: '#E5E7EB',
-            text_dark: '#111827'
+            card_bg: '#1E293B',
+            border_light: '#334155',
+            dark_bg: '#f0e8d5',
+            text_light: '#F1F5F9'
           },
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif']
-          }
+          fontFamily: { sans: ['Poppins', 'sans-serif'] }
         }
       }
     };
   </script>
 </head>
 
-<body class="font-sans bg-bg_light text-text_dark min-h-screen">
+<body class="bg-dark_bg text-text_light font-sans min-h-screen">
 
-  <!-- Вход -->
-  <div id="login-screen" class="flex items-center justify-center h-screen p-4">
-    <div class="bg-card_light shadow-xl rounded-2xl p-8 w-full max-w-sm border border-border_light">
-      <div class="flex flex-col items-center mb-8">
-        <div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-2xl font-bold text-white mb-3">J</div>
-        <h2 class="text-2xl font-bold text-primary">Jastar Admin</h2>
-        <p class="text-gray-500 text-sm mt-1">Вход через Supabase</p>
+  <!-- ЭКРАН ВХОДА -->
+  <div id="login-screen" class="flex items-center justify-center h-screen">
+    <div class="bg-card_bg p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-border_light">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-3xl font-bold mx-auto">J</div>
+        <h2 class="text-2xl font-semibold mt-3 text-primary">Jastar Admin</h2>
+        <p class="text-gray-400 text-sm mt-1">Вход в систему</p>
       </div>
       <form id="login-form" class="space-y-6">
         <div>
-          <label for="email" class="block text-sm text-gray-600 font-medium mb-1">Email</label>
-          <input type="email" id="email" class="w-full bg-white border border-border_light rounded-lg p-3 outline-none focus:ring-2 focus:ring-primary" placeholder="admin@jastar.kz" required>
+          <label for="email" class="block text-sm mb-1 text-gray-400">Email</label>
+          <input id="email" type="email" required class="w-full bg-dark_bg border border-border_light rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="admin@jastar.kz" />
         </div>
         <div>
-          <label for="password" class="block text-sm text-gray-600 font-medium mb-1">Пароль</label>
-          <input type="password" id="password" class="w-full bg-white border border-border_light rounded-lg p-3 outline-none focus:ring-2 focus:ring-primary" placeholder="••••••••" required>
+          <label for="password" class="block text-sm mb-1 text-gray-400">Пароль</label>
+          <input id="password" type="password" required class="w-full bg-dark_bg border border-border_light rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="••••••••" />
         </div>
-        <button type="submit" id="login-button" class="w-full bg-primary text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition">
+        <button id="login-button" type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
           Войти
         </button>
-        <p id="login-message" class="text-center text-error hidden text-sm font-medium mt-2"></p>
+        <p id="login-message" class="text-error hidden text-center text-sm mt-2 font-medium"></p>
       </form>
     </div>
   </div>
 
-  <!-- Панель -->
+  <!-- АДМИН ПАНЕЛЬ -->
   <div id="admin-panel" class="hidden min-h-screen flex">
-    <aside class="w-64 bg-white border-r border-border_light p-6 flex flex-col shadow-md">
-      <div class="flex items-center space-x-3 mb-10 pb-4 border-b border-border_light">
-        <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center text-sm font-bold text-white">J</div>
-        <span class="text-xl font-bold text-text_dark">JASTAR</span>
+    <!-- Sidebar -->
+    <aside class="w-64 bg-card_bg border-r border-border_light p-6 flex flex-col shadow-lg">
+      <div class="flex items-center space-x-3 mb-10 border-b border-border_light pb-4">
+        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">J</div>
+        <span class="text-xl font-semibold text-white">JASTAR</span>
       </div>
-      <nav class="flex-1 space-y-4">
-        <a href="#" class="flex items-center space-x-3 text-primary font-semibold p-2 rounded-lg bg-blue-50 transition">
-          <span>📊</span><span>Дашборд</span>
-        </a>
-        <a href="#" class="flex items-center space-x-3 text-gray-600 hover:text-primary transition p-2 rounded-lg hover:bg-blue-50">
-          <span>📁</span><span>Заявки</span>
-        </a>
+      <nav class="flex-1 space-y-3">
+        <a href="#" class="flex items-center space-x-3 text-primary bg-blue-50/10 rounded-lg p-2 font-semibold">📊 <span>Дашборд</span></a>
+        <a href="#" class="flex items-center space-x-3 text-gray-400 hover:text-primary p-2 rounded-lg hover:bg-blue-50/10">📁 <span>Заявки</span></a>
       </nav>
-      <div class="mt-8 pt-4 border-t border-border_light">
-        <p id="admin-info" class="text-xs text-gray-500 mb-2 truncate"></p>
-        <button id="logout-button" class="w-full bg-error text-white rounded-lg py-2 font-semibold hover:bg-red-700 transition">Выйти</button>
+      <div class="pt-6 border-t border-border_light mt-6">
+        <p id="admin-info" class="text-xs text-gray-400 mb-2 truncate"></p>
+        <button id="logout-button" class="w-full bg-error text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition">Выйти</button>
       </div>
     </aside>
 
-    <main class="flex-1 p-6 md:p-10 overflow-y-auto bg-bg_light">
-      <h1 class="text-3xl font-bold mb-6">Панель управления</h1>
+    <!-- Main content -->
+    <main class="flex-1 p-6 md:p-10 bg-dark_bg overflow-y-auto">
+      <h1 class="text-3xl font-bold mb-8 text-primary">Панель управления</h1>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-        <div class="bg-card_light p-6 rounded-xl shadow-md border-l-4 border-primary">
-          <p class="text-gray-500 text-sm font-medium">Всего заявок</p>
-          <h2 id="total-applications" class="text-4xl font-bold mt-2">0</h2>
+        <div class="bg-card_bg p-6 rounded-xl shadow border-l-4 border-primary">
+          <p class="text-gray-400 text-sm">Всего заявок</p>
+          <h2 id="total-applications" class="text-4xl font-bold mt-2 text-white">0</h2>
         </div>
-        <div class="bg-card_light p-6 rounded-xl shadow-md border-l-4 border-secondary">
-          <p class="text-gray-500 text-sm font-medium">Новые</p>
+        <div class="bg-card_bg p-6 rounded-xl shadow border-l-4 border-secondary">
+          <p class="text-gray-400 text-sm">Новые</p>
           <h2 id="new-applications" class="text-4xl font-bold mt-2 text-secondary">0</h2>
         </div>
-        <div class="bg-card_light p-6 rounded-xl shadow-md border-l-4 border-success">
-          <p class="text-gray-500 text-sm font-medium">Обработанные</p>
+        <div class="bg-card_bg p-6 rounded-xl shadow border-l-4 border-success">
+          <p class="text-gray-400 text-sm">Обработанные</p>
           <h2 id="processed-applications" class="text-4xl font-bold mt-2 text-success">0</h2>
         </div>
       </div>
 
-      <div class="bg-card_light p-6 rounded-xl shadow-md mb-10">
-        <h3 class="text-lg font-semibold mb-4">Динамика заявок за 7 дней</h3>
+      <div class="bg-card_bg p-6 rounded-xl shadow mb-10">
+        <h3 class="text-lg font-semibold mb-4">График заявок</h3>
         <canvas id="applicationsChart" height="300"></canvas>
       </div>
 
-      <div class="bg-card_light p-6 rounded-xl shadow-md">
+      <div class="bg-card_bg p-6 rounded-xl shadow">
         <h3 class="text-lg font-semibold mb-4">Последние заявки</h3>
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-border_light rounded-lg">
-            <thead class="bg-gray-50 text-gray-600 text-sm">
+            <thead class="bg-gray-700 text-gray-300 text-sm">
               <tr>
                 <th class="py-3 px-4 text-left">Дата</th>
                 <th class="py-3 px-4 text-left">Имя</th>
@@ -117,8 +113,8 @@
                 <th class="py-3 px-4 text-left">Действия</th>
               </tr>
             </thead>
-            <tbody id="applications-table-body" class="text-gray-700 divide-y divide-border_light">
-              <tr><td colspan="7" class="p-6 text-center text-gray-400">Загрузка заявок...</td></tr>
+            <tbody id="applications-table-body" class="divide-y divide-border_light">
+              <tr><td colspan="7" class="p-6 text-center text-gray-500">Загрузка заявок...</td></tr>
             </tbody>
           </table>
         </div>
@@ -126,54 +122,9 @@
     </main>
   </div>
 
-  <!-- Подключаем Supabase -->
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module">
-    import { supabase } from './supabase.js';
-
-    const loginForm = document.getElementById('login-form');
-    const loginScreen = document.getElementById('login-screen');
-    const adminPanel = document.getElementById('admin-panel');
-    const loginButton = document.getElementById('login-button');
-    const loginMessage = document.getElementById('login-message');
-    const logoutButton = document.getElementById('logout-button');
-    const adminInfo = document.getElementById('admin-info');
-
-    // Логин
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      loginButton.disabled = true;
-      loginButton.textContent = 'Вход...';
-      loginMessage.classList.add('hidden');
-
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) {
-        loginMessage.textContent = 'Ошибка: неверный логин или пароль';
-        loginMessage.classList.remove('hidden');
-        loginButton.disabled = false;
-        loginButton.textContent = 'Войти';
-      } else {
-        loginScreen.classList.add('hidden');
-        adminPanel.classList.remove('hidden');
-        adminInfo.textContent = data.user.email;
-      }
-    });
-
-    // Выход
-    logoutButton.addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      adminPanel.classList.add('hidden');
-      loginScreen.classList.remove('hidden');
-    });
-  </script>
-
-  <script type="module" src="admin.js"></script>
+  <script type="module" src="./supabase.js"></script>
+  <script src="./admin.js"></script>
 </body>
 </html>
